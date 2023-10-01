@@ -15,24 +15,28 @@ export default function AssetLoader() {
             setSpinnerText("Loading default assets")
             let nyaFile = new NyaFile();
             await nyaFile.load("https://lightquark.network/default.nya", true); // Load default assets
-
             // Update the spinner asset from the default file
             setSpinnerText("Updating spinner")
-            setSpinnerImage(await nyaFile.getImageAssetDataUrl("assets/spinner"))
+            setSpinnerImage(await nyaFile.getAssetDataUrl("assets/spinner"))
             setSpinnerText("Seeing if default nyafile worked")
 
             // After a second load the custom nyafile and update spinner again, this time it should be coming from not-default
             setTimeout(async () => {
                 setSpinnerText("Loading custom nyafile")
                 await nyaFile.load("https://lightquark.network/not-default.nya");
+                nyaFile.queueCache("assets/test", "text")
+                nyaFile.queueCache("assets/test2", "text")
+                nyaFile.queueCache("assets/test3", "text")
+                nyaFile.queueCache("assets/spinner", "dataUrl")
+                await nyaFile.waitAllCached()
                 setSpinnerText("Seeing if custom nyafile worked")
-                setSpinnerImage(await nyaFile.getImageAssetDataUrl("assets/spinner"))
-            }, 1000)
+                setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
+            }, 2000)
 
             // After another second set ready to true
             setTimeout(async () => {
                 setReady(true)
-            }, 2000)
+            }, 3000)
         })()
     }, []);
 
