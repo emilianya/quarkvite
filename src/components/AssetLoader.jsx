@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
 import logo from "../assets/react.svg";
 import "../style/spin.css";
-import NyaFile from "../util/NyaFile.js";
+import NyaFile from "@litdevs/nyalib";
 
 export default function AssetLoader() {
     let [ready, setReady] = useState(false);
@@ -14,7 +14,7 @@ export default function AssetLoader() {
             // Create an instance of the NyaFile class, and load the default assets
             setSpinnerText("Loading default assets")
             let nyaFile = new NyaFile();
-            await nyaFile.load(); // Load default assets
+            await nyaFile.load("https://lightquark.network/default.nya", true); // Load default assets
 
             // Update the spinner asset from the default file
             setSpinnerText("Updating spinner")
