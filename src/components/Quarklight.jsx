@@ -16,7 +16,7 @@ function Quarklight() {
         //console.log(NyaFile._instance.getCachedJson("assets/test1"))
     }
 
-    return (<>
+    return (<div style={{backgroundImage: `url(${nyaFile.getCachedData("assets/testBackground")})`}}>
             <form onSubmit={formSubmitHandler}>
                 <input type="email" onInput={(e) => setEmail(e.target.value)} autoComplete="email"/>
                 <input type="password" onInput={(e) => setPassword(e.target.value)} autoComplete="current-password"/>
@@ -24,7 +24,7 @@ function Quarklight() {
             </form>
             {JSON.stringify(nyaFile.assetCache)}
             <img src={nyaFile.getCachedData("assets/spinner")}  alt={""}/>
-        </>)
+        </div>)
 }
 
 export default Quarklight

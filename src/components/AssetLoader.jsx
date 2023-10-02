@@ -28,6 +28,7 @@ export default function AssetLoader() {
                 nyaFile.queueCache("assets/test2", "text")
                 nyaFile.queueCache("assets/test3", "text")
                 nyaFile.queueCache("assets/spinner", "dataUrl")
+                nyaFile.queueCache("assets/testBackground", "dataUrl")
                 await nyaFile.waitAllCached()
                 setSpinnerText("Seeing if custom nyafile worked")
                 setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
