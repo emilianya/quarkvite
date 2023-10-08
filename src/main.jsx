@@ -2,13 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Quarklight from './components/Quarklight.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import AssetLoader from "./components/AssetLoader.jsx";
 import "./style/root.css";
+import AssetRoot from "./components/asset/AssetRoot.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <AssetLoader />,
+        element: <AssetRoot />,
         children: [
             {
                 path: "/",

@@ -1,19 +1,18 @@
-import {useState} from 'react'
+import {useContext, useState} from 'react'
 import NyaFile from "@litdevs/nyalib";
+import AssetContext from "../context/AssetContext.js";
 
 
 function Quarklight() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
+    let {setNyaUrl} = useContext(AssetContext);
     let nyaFile = new NyaFile()
 
     const formSubmitHandler = (e) => {
         e.preventDefault();
         console.log(email, password)
-        console.log(nyaFile.getCachedJson("assets/test"))
-        console.log(nyaFile.getCachedJson("assets/test2"))
-        console.log(nyaFile.getCachedJson("assets/test3"))
-        //console.log(NyaFile._instance.getCachedJson("assets/test1"))
+        setNyaUrl(password)
     }
 
     return (<div style={{backgroundImage: `url(${nyaFile.getCachedData("assets/testBackground")})`}}>
