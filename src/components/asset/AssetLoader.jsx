@@ -16,12 +16,17 @@ export default function AssetLoader() {
 
     // Default asset load
     useEffect(() => {
+        // Hacky thing to make sure this only happens once
+        if (AssetLoader?.loadedBefore === true) return;
+        AssetLoader.loadedBefore = true;
+
         setReady(false);
         (async () => {
             // Create an instance of the NyaFile class, and load the default assets
             setSpinnerText("Loading assets")
             setSpinnerSubText("Downloading nyafile")
             let nyaFile = new NyaFile();
+            if (nyaFile.defaultFile) return; // Dont do all this garbage again if defaultFile is already somehow defined
             await nyaFile.load("https://lightquark.network/default.nya", true); // Load default assets
             setSpinnerImage(await nyaFile.getAssetDataUrl("assets/spinner"))
             setSpinnerSubText("Caching assets")
@@ -73,7 +78,7 @@ export default function AssetLoader() {
             setReady(true)
         })()
 
-    }, [nyaUrl, defaultReady]);
+    }, [nyaUrl, defaultReady, ready]);
 
     return <>
         {ready ? <Outlet/> : <Spinner text={spinnerText} subText={spinnerSubText} img={spinnerImage} />}

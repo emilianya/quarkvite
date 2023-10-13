@@ -23,6 +23,7 @@ function Quarklight() {
             </form>
             {JSON.stringify(nyaFile.assetCache)}
             <img src={nyaFile.getCachedData("assets/spinner")}  alt={""}/>
+        {nyaFile.assetCache["assets/spinner"].data.toString()}
         </div>)
 }
 
