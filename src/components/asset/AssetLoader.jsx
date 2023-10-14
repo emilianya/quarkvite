@@ -26,7 +26,7 @@ export default function AssetLoader() {
             setSpinnerText("Loading assets")
             setSpinnerSubText("Downloading nyafile")
             let nyaFile = new NyaFile();
-            await nyaFile.load("https://lightquark.network/default.nya", true); // Load default assets
+            await nyaFile.load("/default.nya", true); // Load default assets
             setSpinnerImage(await nyaFile.getAssetDataUrl("assets/spinner"))
             setSpinnerSubText("Caching assets")
             nyaFile.queueCache("assets/spinner")

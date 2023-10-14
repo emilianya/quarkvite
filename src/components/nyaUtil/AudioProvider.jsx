@@ -9,7 +9,8 @@ export default function AudioProvider() {
         if (!bgm) return;
         let nyaFile = new NyaFile();
         let audio = new Audio(nyaFile.getCachedData(bgm));
-        audio.volume = 0.5
+        audio.volume = 0.25;
+        audio.loop = true;
         audio.play();
         return () => {
             console.debug("[AudioProvider] Cleaning up! Likely changing tracks")

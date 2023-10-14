@@ -21,7 +21,7 @@ function Quarklight() {
 
     useEffect(() => {
         console.debug("Quarklight useEffect")
-        //setBgm("assets/shinzou") (muted music lol)
+        setBgm("assets/shinzou")
         // Everything in my brain says this should explode?
         // Somehow it doesn't... even though setBgm is a set state function
     }, [setBgm]);
