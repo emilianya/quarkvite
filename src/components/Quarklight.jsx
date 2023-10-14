@@ -1,8 +1,7 @@
 import {useContext, useEffect, useState} from 'react'
-import NyaFile from "@litdevs/nyalib";
+import NyaFile, {NyaSoundClickable} from "@litdevs/nyalib";
 import AudioContext from "../context/AudioContext.js";
 import AssetContext from "../context/AssetContext.js";
-import NyaSoundClickable from "./nyaUtil/NyaSoundClickable.jsx";
 import AudioProvider from "./nyaUtil/AudioProvider.jsx";
 
 
@@ -40,9 +39,9 @@ function Quarklight() {
                 console.log("Setting new theme")
                 setNyaUrl(password)
             }}>Set nya url to password</button>
+                <p>test</p>
             </NyaSoundClickable>
             <img src={nyaFile.getCachedData("assets/spinner")}  alt={""}/>
-        {nyaFile.assetCache["assets/spinner"].data.toString()}
         </div>)
 }
 
