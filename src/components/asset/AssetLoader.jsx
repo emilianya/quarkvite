@@ -20,12 +20,12 @@ export default function AssetLoader() {
         if (AssetLoader?.loadedBefore === true) return;
         AssetLoader.loadedBefore = true;
 
+        setReady(false);
         (async () => {
             // Create an instance of the NyaFile class, and load the default assets
             setSpinnerText("Loading assets")
             setSpinnerSubText("Downloading nyafile")
             let nyaFile = new NyaFile();
-            if (nyaFile.defaultFile) return; // Dont do all this garbage again if defaultFile is already somehow defined
             await nyaFile.load("https://lightquark.network/default.nya", true); // Load default assets
             setSpinnerImage(await nyaFile.getAssetDataUrl("assets/spinner"))
             setSpinnerSubText("Caching assets")
@@ -33,7 +33,6 @@ export default function AssetLoader() {
             nyaFile.queueCache("assets/testBackground")
             nyaFile.queueCache("assets/shinzou")
             nyaFile.queueCache("assets/gate")
-            nyaFile.queueCache("assets/sfx")
             await nyaFile.waitAllCached()
             setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
             setDefaultReady(true)
@@ -44,6 +43,7 @@ export default function AssetLoader() {
     // When custom nya file url is changed from context kick client back to loader for full asset reload
     // If needed clear old nyafile, or just return
     useEffect(() => {
+        console.log("Start custom loader")
         if (!defaultReady) return;
         // If nyaUrl is empty or was cleared
         if (!nyaUrl) {
@@ -53,12 +53,13 @@ export default function AssetLoader() {
             if (nyaFile.nyaFile) {
                 // There was a nyafile set before, clear it
                 setReady(false);
-                return (async () => {
+                (async () => {
                     // This should be as simple as clearing nyaFile.nyaFile and resetting cache right?
                     nyaFile.nyaFile = undefined;
                     await nyaFile.explodeCache()
                     setReady(true)
-                })()
+                })();
+                return;
             }
             // "Why do you not just call setReady(true) in either case"
             // Because I'm not sure what kind of hell that would cause for anything that depends on ready
@@ -80,7 +81,7 @@ export default function AssetLoader() {
             setReady(true)
         })()
 
-    }, [nyaUrl, defaultReady, ready]);
+    }, [nyaUrl, defaultReady]);
 
     return <>
         {ready ? <Outlet/> : <Spinner text={spinnerText} subText={spinnerSubText} img={spinnerImage} />}
