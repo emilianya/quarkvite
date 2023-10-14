@@ -20,7 +20,6 @@ export default function AssetLoader() {
         if (AssetLoader?.loadedBefore === true) return;
         AssetLoader.loadedBefore = true;
 
-        setReady(false);
         (async () => {
             // Create an instance of the NyaFile class, and load the default assets
             setSpinnerText("Loading assets")
@@ -32,6 +31,9 @@ export default function AssetLoader() {
             setSpinnerSubText("Caching assets")
             nyaFile.queueCache("assets/spinner")
             nyaFile.queueCache("assets/testBackground")
+            nyaFile.queueCache("assets/shinzou")
+            nyaFile.queueCache("assets/gate")
+            nyaFile.queueCache("assets/sfx")
             await nyaFile.waitAllCached()
             setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
             setDefaultReady(true)
