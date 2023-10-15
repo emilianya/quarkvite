@@ -3,3 +3,8 @@
     padding: 0;
     border: none;
 }
+
+body {
+    margin: unset;
+    display: unset;
+}

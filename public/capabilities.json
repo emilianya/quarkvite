@@ -1,0 +1,16 @@
+{
+	"$schema": "https://lq.litdevs.org/capability.schema.json",
+	"client": {
+		"name": "Quarkvite",
+		"author": "Emilia",
+		"version": "0.0.0 //TODO: update this",
+		"url": "https://quarkvite.vercel.app"
+	},
+	"features": {
+		"full": [
+			"general.opensource",
+			"general.authentication",
+			"general.networks"
+		]
+	}
+}

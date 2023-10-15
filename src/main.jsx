@@ -12,7 +12,13 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element:  <Quarklight />
+                element:  <Quarklight />,
+                /*children: [
+                    {
+                        path: "/",
+                        element: <Client />
+                    }
+                ]*/
             },
         ],
     },

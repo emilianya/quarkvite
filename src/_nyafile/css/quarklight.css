@@ -1,6 +1,3 @@
-.login-form {
-    text-align: center;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-}
+/*
+    This css gets loaded for the whole application (outside the asset load spinner)
+ */
