@@ -13,6 +13,7 @@ export default function AssetLoader() {
     let [spinnerSubText, setSpinnerSubText] = useState("Loading...");
     let [spinnerImage, setSpinnerImage] = useState(logo)
     let {nyaUrl} = useContext(AssetContext);
+    let nyaFile = new NyaFile();
 
     // Default asset load
     useEffect(() => {
@@ -22,19 +23,18 @@ export default function AssetLoader() {
 
         setReady(false);
         (async () => {
-            // Create an instance of the NyaFile class, and load the default assets
+            // Load the default assets
             setSpinnerText("Loading assets")
             setSpinnerSubText("Downloading nyafile")
-            let nyaFile = new NyaFile();
             await nyaFile.load("/default.nya", true); // Load default assets
             setSpinnerImage(await nyaFile.getAssetDataUrl("assets/spinner"))
             setSpinnerSubText("Caching assets")
+
+            // Load image assets
             nyaFile.queueCache("assets/spinner")
-            nyaFile.queueCache("assets/testBackground")
-            nyaFile.queueCache("assets/shinzou")
-            nyaFile.queueCache("assets/gate")
-            nyaFile.queueCache("assets/quarklight", "text")
-            nyaFile.queueCache("assets/quarklight-alt", "text")
+            // Load CSS for components
+            nyaFile.queueCache("css/quarklight", "text")
+
             await nyaFile.waitAllCached()
             setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
             setDefaultReady(true)
