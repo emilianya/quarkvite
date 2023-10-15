@@ -1,5 +1,5 @@
-import {useContext, useEffect, useLayoutEffect, useState} from 'react'
-import {NyaFile, NyaSoundClickable} from "@litdevs/nyalib";
+import {useContext, useEffect, useState} from 'react'
+import {NyaFile, NyaSoundClickable, StyleProvider} from "@litdevs/nyalib";
 import AudioContext from "../context/AudioContext.js";
 import AssetContext from "../context/AssetContext.js";
 import AudioProvider from "./nyaUtil/AudioProvider.jsx";
@@ -48,23 +48,3 @@ function Quarklight() {
 }
 
 export default Quarklight
-
-function StyleProvider({asset, nyaFile}) {
-    if (!nyaFile) throw new Error("StyleProvider with no nyaFile provided")
-    useLayoutEffect(() => {
-        let cssTag = document.querySelector(`style[data-nya-css-asset='${asset}']`);
-        if (cssTag) {
-            cssTag.remove()
-        }
-
-        let styleTag = document.createElement('style');
-        styleTag.setAttribute("type", "text/css")
-        styleTag.setAttribute("data-nya-css-asset", asset)
-        styleTag.appendChild(document.createTextNode(nyaFile.getCachedData(asset)))
-        document.head.appendChild(styleTag)
-        return () => {
-            document.querySelector(`style[data-nya-css-asset='${asset}']`).remove();
-        }
-    }, [asset]);
-    return <></>
-}
