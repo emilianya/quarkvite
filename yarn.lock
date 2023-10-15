@@ -406,10 +406,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@litdevs/nyalib@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@litdevs/nyalib/-/nyalib-1.4.0.tgz#0c5fc18113fe6813ca9a727d29333c218cd93f09"
-  integrity sha512-NE9oliM0OCzj+EX85n3h9CE9dhyzHBv/iY9P3yrtdEF++QtrefeSx9XMxRuJxLdA9spYZ0e/RKDXED7UOQpC4g==
+"@litdevs/nyalib@^1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@litdevs/nyalib/-/nyalib-1.4.3.tgz#59eacb1dd82968a6fa322e0bbc770156ef3503da"
+  integrity sha512-fSFKWZfVPmkYyCGvvy5C3N1swCw5X3rkL+WRJFCHbJ0e8TnozL06Ew8kCYZG6I+QC55SRySt0oXAldMKGNUKag==
   dependencies:
     jszip "^3.10.1"
 

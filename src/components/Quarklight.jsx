@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react'
-import NyaFile, {NyaSoundClickable} from "@litdevs/nyalib";
+import {NyaFile, NyaSoundClickable} from "@litdevs/nyalib";
 import AudioContext from "../context/AudioContext.js";
 import AssetContext from "../context/AssetContext.js";
 import AudioProvider from "./nyaUtil/AudioProvider.jsx";
@@ -31,11 +31,11 @@ function Quarklight() {
             <form onSubmit={formSubmitHandler}>
                 <input type="email" onInput={(e) => setEmail(e.target.value)} autoComplete="email"/>
                 <input type="password" onInput={(e) => setPassword(e.target.value)} autoComplete="current-password"/>
-                <NyaSoundClickable asset={"assets/sfx"}><input type="submit" style={{backgroundColor: "red"}} onClick={() => {
+                <NyaSoundClickable nyaFile={nyaFile} asset={"assets/sfx"}><input type="submit" style={{backgroundColor: "red"}} onClick={() => {
                     console.log("original click handler")
                 }}/></NyaSoundClickable>
             </form>
-            <NyaSoundClickable asset={"assets/sfx"}><button onClick={() => {
+            <NyaSoundClickable nyaFile={nyaFile} asset={"assets/sfx"}><button onClick={() => {
                 console.log("Setting new theme")
                 setNyaUrl(password)
             }}>Set nya url to password</button>

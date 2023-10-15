@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
 import logo from "../../assets/react.svg";
 import "../../style/spin.css";
-import NyaFile from "@litdevs/nyalib";
+import {NyaFile} from "@litdevs/nyalib";
 import AssetContext from "../../context/AssetContext.js";
 
 export default function AssetLoader() {

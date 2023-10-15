@@ -1,6 +1,6 @@
 import {useContext, useEffect} from "react";
 import AudioContext from "../../context/AudioContext.js";
-import NyaFile from "@litdevs/nyalib";
+import {NyaFile} from "@litdevs/nyalib";
 
 export default function AudioProvider() {
     let {bgm} = useContext(AudioContext);
