@@ -33,6 +33,8 @@ export default function AssetLoader() {
             nyaFile.queueCache("assets/testBackground")
             nyaFile.queueCache("assets/shinzou")
             nyaFile.queueCache("assets/gate")
+            nyaFile.queueCache("assets/quarklight", "text")
+            nyaFile.queueCache("assets/quarklight-alt", "text")
             await nyaFile.waitAllCached()
             setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
             setDefaultReady(true)
