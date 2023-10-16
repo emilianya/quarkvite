@@ -94,7 +94,6 @@ function LoginForm({setToken}) {
         e.preventDefault();
         setError("");
         setErrorAffects([])
-        // TODO: Network input validation
         console.log(email, password, network)
         if (!email || !password || !network)
         {
