@@ -5,7 +5,9 @@ export default class APIConfig {
     token;
     networkInformation;
     constructor() {
+        console.log("APIConfig constructor")
         if (APIConfig._instance) return APIConfig._instance;
         APIConfig._instance = this;
+        console.log("APIConfig constructor (new instance)")
     }
 }

@@ -4,6 +4,7 @@ import localForage from "localforage";
 
 export default async function login(email, password) {
     let apiConfig = new APIConfig();
+    console.log(apiConfig)
     try {
         let res = await apiCall("auth/token", "POST", {
             email, password
