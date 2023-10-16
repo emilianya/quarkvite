@@ -8,6 +8,8 @@ import localForage from "localforage";
 import verifyValidToken from "../util/api/methods/verifyValidToken.js";
 import networkInformation from "../util/api/methods/networkInformation.js";
 import login from "../util/api/methods/login.js";
+import APIContext from "../context/APIContext.js";
+import Spinner from "./Spinner.jsx";
 
 function Quarklight() {
     let [ready, setReady] = useState(false)
@@ -55,14 +57,27 @@ function Quarklight() {
         // Somehow it doesn't... even though setBgm is a set state function and apiConfig is a random class
     }, [apiConfig, setBgm]);
 
+    useEffect(() => {
+        apiConfig.token = token;
+        (async () => {
+            let localConfig = await localForage.getItem("localConfig");
+            localConfig.token = apiConfig.token;
+            await localForage.setItem("localConfig", localConfig);
+        })()
+    }, [apiConfig, token])
+
     return (
-        <div>
-            <AudioProvider/>
-            <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
-            {ready ? <>
-                {token ? <Outlet/> : <LoginForm setToken={setToken} />}
-            </> : <Spinner text={spinnerText} subText={spinnerSubText} />}
-        </div>)
+        <APIContext.Provider value={{
+            token, setToken
+        }}>
+            <div>
+                <AudioProvider/>
+                <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
+                {ready ? <>
+                    {token ? <Outlet/> : <LoginForm setToken={setToken} />}
+                </> : <Spinner text={spinnerText} subText={spinnerSubText} />}
+            </div>
+        </APIContext.Provider>)
 }
 
 function LoginForm({setToken}) {
@@ -105,17 +120,6 @@ function LoginForm({setToken}) {
                 <NyaSoundClickable nyaFile={nyaFile} asset="assets/sfx"><input type="submit" value={"Login"} /></NyaSoundClickable>
             </form>
             {error}
-        </div>
-    </>
-}
-
-function Spinner({text, subText}) {
-    let nyaFile = new NyaFile();
-    return <>
-        <div>
-            <img src={nyaFile.getCachedData("assets/spinner")} alt={""} style={{animation: "spin 1s ease-in-out infinite"}}/>
-            <p>{text}</p>
-            <small>{subText}</small>
         </div>
     </>
 }

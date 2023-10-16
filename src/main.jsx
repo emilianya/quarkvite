@@ -4,6 +4,7 @@ import Quarklight from './components/Quarklight.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import "./style/root.css";
 import AssetRoot from "./components/asset/AssetRoot.jsx";
+import Client from "./components/Client.jsx";
 
 const router = createBrowserRouter([
     {
@@ -13,12 +14,12 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element:  <Quarklight />,
-                /*children: [
+                children: [
                     {
                         path: "/",
                         element: <Client />
                     }
-                ]*/
+                ]
             },
         ],
     },
