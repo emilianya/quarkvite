@@ -87,18 +87,31 @@ function LoginForm({setToken}) {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let [network, setNetwork] = useState(apiConfig.baseUrl);
+    let [errorAffects, setErrorAffects] = useState([]);
     let [error, setError] = useState("");
 
     const formSubmitHandler = async (e) => {
         e.preventDefault();
         setError("");
+        setErrorAffects([])
         // TODO: Network input validation
-        // TODO: Email input validation
-        // TODO: form fields required
         console.log(email, password, network)
+        if (!email || !password || !network)
+        {
+            setError("All fields are required")
+            setErrorAffects([!email && "email", !password && "password", !network && "network"])
+            return;
+        }
+        let emailRegex = /[^@]+@[^@]+/
+        if (!emailRegex.test(email)) {
+            setError("Invalid email")
+            setErrorAffects(["email"])
+            return;
+        }
         let networkInfo = await networkInformation(network)
         if (!networkInfo.success) {
-            setError(networkInfo.error);
+            setError(networkInfo.error)
+            setErrorAffects(["network"])
             return;
         }
         let loginInfo = await login(email, password)
@@ -120,6 +133,7 @@ function LoginForm({setToken}) {
                 <NyaSoundClickable nyaFile={nyaFile} asset="assets/sfx"><input type="submit" value={"Login"} /></NyaSoundClickable>
             </form>
             {error}
+            {JSON.stringify(errorAffects)}
         </div>
     </>
 }
