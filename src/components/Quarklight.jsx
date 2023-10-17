@@ -1,12 +1,11 @@
-import {useContext, useEffect, useMemo, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import {NyaFile, NyaSoundClickable, StyleProvider} from "@litdevs/nyalib";
 import AudioContext from "../context/AudioContext.js";
 import AudioProvider from "./nyaUtil/AudioProvider.jsx";
 import {Outlet} from "react-router-dom";
-import APIConfig from "../util/api/APIConfig.js";
 import localForage from "localforage";
 import verifyValidToken from "../util/api/methods/verifyValidToken.js";
-import networkInformation from "../util/api/methods/networkInformation.js";
+import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
 import login from "../util/api/methods/login.js";
 import APIContext from "../context/APIContext.js";
 import Spinner from "./Spinner.jsx";
@@ -17,8 +16,10 @@ function Quarklight() {
     let [spinnerSubText, setSpinnerSubText] = useState("Loading...");
     let {setBgm} = useContext(AudioContext);
     let nyaFile = new NyaFile();
-    let apiConfig = useMemo(() => new APIConfig(), []);
-    let [token, setToken] = useState(apiConfig.token)
+    let [token, setToken] = useState("");
+    let [networkInformation, setNetworkInformation] = useState("");
+    let [version, setVersion] = useState("");
+    let [baseUrl, setBaseUrl] = useState("");
 
     useEffect(() => {
         console.debug("Quarklight useEffect");
@@ -27,24 +28,28 @@ function Quarklight() {
             setSpinnerText("Preparing API")
             setSpinnerSubText("Fetching stored configuration")
             let localConfig = await localForage.getItem("localConfig") || {};
-            apiConfig.baseUrl = localConfig?.network?.baseUrl || "https://lightquark.network";
-            apiConfig.version = localConfig?.network?.version || "v2";
-            apiConfig.token = localConfig?.token || null;
-            setToken(apiConfig.token)
-            localConfig.network = localConfig?.network || {};
-            localConfig.network.baseUrl = apiConfig.baseUrl;
-            localConfig.network.version = apiConfig.version;
-            localConfig.token = apiConfig.token;
+            let lBaseUrl = localConfig?.network?.baseUrl || "https://lightquark.network";
+            let lVersion = localConfig?.network?.version || "v2";
+            let lToken = localConfig?.token || null;
+            let lNetwork = localConfig?.network || {};
+            let lNetworkInformation = localConfig?.networkInformation || {};
+            setBaseUrl(lBaseUrl);
+            setVersion(lVersion);
+            setToken(lToken);
+            localConfig.network = lNetwork;
+            localConfig.network.baseUrl = lBaseUrl;
+            localConfig.network.version = lVersion;
+            localConfig.networkInformation = lNetworkInformation;
+            localConfig.token = lToken;
             await localForage.setItem("localConfig", localConfig);
             // If token is present check the validity
-            if (apiConfig.token) {
+            if (lToken) {
                 setSpinnerSubText("Logging in")
                 let validToken = await verifyValidToken();
                 // If token is not valid clear it
                 if (!validToken) {
-                    apiConfig.token = null;
-                    localConfig.token = apiConfig.token;
-                    setToken(apiConfig.token)
+                    localConfig.token = null;
+                    setToken(null)
                     await localForage.setItem("localConfig", localConfig);
                 }
             }
@@ -54,39 +59,34 @@ function Quarklight() {
         })();
         // setBgm("music/menu")
         // Everything in my brain says this should explode?
-        // Somehow it doesn't... even though setBgm is a set state function and apiConfig is a random class
-    }, [apiConfig, setBgm]);
-
-    useEffect(() => {
-        apiConfig.token = token;
-        (async () => {
-            let localConfig = await localForage.getItem("localConfig");
-            localConfig.token = apiConfig.token;
-            await localForage.setItem("localConfig", localConfig);
-        })()
-    }, [apiConfig, token])
+        // Somehow it doesn't... even though setBgm is a set state function
+    }, [setBgm]);
 
     return (
         <APIContext.Provider value={{
-            token, setToken
+            token, setToken,
+            networkInformation, setNetworkInformation,
+            version, setVersion,
+            baseUrl, setBaseUrl
         }}>
             <div>
                 <AudioProvider/>
                 <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
                 {ready ? <>
-                    {token ? <Outlet/> : <LoginForm setToken={setToken} />}
+                    {token ? <Outlet/> : <LoginForm />}
                 </> : <Spinner text={spinnerText} subText={spinnerSubText} />}
             </div>
         </APIContext.Provider>)
 }
 
-function LoginForm({setToken}) {
+function LoginForm() {
     let nyaFile = new NyaFile();
-    let apiConfig = useMemo(() => new APIConfig(), []);
+
+    let {baseUrl, setToken, setNetworkInformation} = useContext(APIContext)
 
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
-    let [network, setNetwork] = useState(apiConfig.baseUrl);
+    let [network, setNetwork] = useState(baseUrl);
     let [errorAffects, setErrorAffects] = useState([]);
     let [error, setError] = useState("");
 
@@ -94,7 +94,6 @@ function LoginForm({setToken}) {
         e.preventDefault();
         setError("");
         setErrorAffects([])
-        console.log(email, password, network)
         if (!email || !password || !network)
         {
             setError("All fields are required")
@@ -107,12 +106,13 @@ function LoginForm({setToken}) {
             setErrorAffects(["email"])
             return;
         }
-        let networkInfo = await networkInformation(network)
+        let networkInfo = await getNetworkInformation(network)
         if (!networkInfo.success) {
             setError(networkInfo.error)
             setErrorAffects(["network"])
             return;
         }
+        setNetworkInformation(networkInfo.res)
         let loginInfo = await login(email, password)
         console.log(loginInfo)
         if (!loginInfo.success) {
@@ -128,7 +128,7 @@ function LoginForm({setToken}) {
             <form className="LoginForm-form" onSubmit={formSubmitHandler}>
                 <input className="LoginForm-emailInput input-box" placeholder="Email" onInput={(e) => setEmail(e.target.value)} type="text" autoComplete="email"/>
                 <input className="LoginForm-passwordInput input-box" placeholder="Password" onInput={(e) => setPassword(e.target.value)} type="password" autoComplete="current-password"/>
-                <input className="LoginForm-networkInput input-box" placeholder="Network url" onInput={(e) => setNetwork(e.target.value)} type="text" defaultValue={apiConfig.baseUrl} autoComplete="off"/>
+                <input className="LoginForm-networkInput input-box" placeholder="Network url" onInput={(e) => setNetwork(e.target.value)} type="text" defaultValue={baseUrl} autoComplete="off"/>
                 <NyaSoundClickable nyaFile={nyaFile} asset="assets/sfx"><input type="submit" value={"Login"} /></NyaSoundClickable>
             </form>
             {error}

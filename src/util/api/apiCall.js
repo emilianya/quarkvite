@@ -1,5 +1,5 @@
-import APIConfig from "./APIConfig.js";
 import APIResponse from "./classes/APIResponse.js";
+import localForage from "localforage";
 
 /**
  *
@@ -10,8 +10,8 @@ import APIResponse from "./classes/APIResponse.js";
  * @return {Promise<APIResponse>}
  */
 export default async function apiCall (apiMethod, httpMethod, body = undefined, skipAuth = false) {
-    let apiConfig = new APIConfig();
-    if (!skipAuth && !apiConfig.token) throw new Error("Missing token")
+    let localConfig = await localForage.getItem("localConfig")
+    if (!skipAuth && !localConfig.token) throw new Error("Missing token")
     try {
         let headers = {};
         let requestBody = undefined;
@@ -20,8 +20,8 @@ export default async function apiCall (apiMethod, httpMethod, body = undefined, 
             headers["Content-Type"] = "application/json";
             requestBody = JSON.stringify(body);
         }
-        if (!skipAuth) headers.Authorization = `Bearer ${apiConfig.token}`;
-        let apiRequest = await fetch(`${apiConfig.baseUrl}/${apiConfig.version}/${apiMethod}${httpMethod === "GET" && body ? "?" + new URLSearchParams(body) : ""}`, {
+        if (!skipAuth) headers.Authorization = `Bearer ${localConfig.token}`;
+        let apiRequest = await fetch(`${localConfig.network.baseUrl}/${localConfig.network.version}/${apiMethod}${httpMethod === "GET" && body ? "?" + new URLSearchParams(body) : ""}`, {
             method: httpMethod,
             headers,
             body: requestBody

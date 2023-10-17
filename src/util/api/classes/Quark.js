@@ -1,4 +1,5 @@
 import apiCall from "../apiCall.js";
+import Channel from "./Channel.js";
 
 export default class Quark {
     channels = [];
@@ -22,7 +23,7 @@ export default class Quark {
     }
 
     updateFrom(quark) {
-        this.channels = quark.channels;
+        this.channels = quark.channels.map(channel => new Channel(channel));
         this._id = quark._id;
         this.members = quark.members;
         this.name = quark.name;
@@ -30,5 +31,14 @@ export default class Quark {
         this.invite = quark.invite;
         this.owners = quark.owners;
         this.roles = quark.roles;
+    }
+
+    subscribe(gatewaySend) {
+        gatewaySend({
+            event: "subscribe",
+            message: `quark_${this._id}`
+        });
+        console.log(`Subscribed to quark_${this._id}`)
+        this.channels.forEach(channel => channel.subscribe(gatewaySend));
     }
 }
