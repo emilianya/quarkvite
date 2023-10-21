@@ -10,7 +10,12 @@
 		"full": [
 			"general.opensource",
 			"general.authentication",
-			"general.networks"
+			"general.networks",
+			"quarks.list",
+			"quarks.view",
+			"channels.list",
+			"messages.read",
+			"messages.send"
 		]
 	}
 }
