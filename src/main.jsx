@@ -5,6 +5,8 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import "./style/root.css";
 import AssetRoot from "./components/asset/AssetRoot.jsx";
 import Client from "./components/Client.jsx";
+import Quark from "./components/quarks/Quark.jsx";
+import Channel from "./components/channels/Channel.jsx";
 
 const router = createBrowserRouter([
     {
@@ -17,7 +19,19 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "/",
-                        element: <Client />
+                        element: <Client />,
+                        children: [
+                            {
+                                path: "/:quarkId",
+                                element: <Quark />,
+                                children: [
+                                    {
+                                        path: "/:quarkId/:channelId",
+                                        element: <Channel />
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },

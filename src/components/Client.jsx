@@ -9,6 +9,8 @@ import useWebSocket from "react-use-websocket";
 import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
 import MessageInput from "./messages/MessageInput.jsx";
 import MessageDisplay from "./messages/MessageDisplay.jsx";
+import {Outlet} from "react-router-dom";
+import QuarkSelector from "./quarks/QuarkSelector.jsx";
 
 export default function Client () {
     let [ready, setReady] = useState(false);
@@ -181,12 +183,15 @@ export default function Client () {
             quarksInfo, setQuarksInfo,
             gateway, setGateway,
             messageCache, setMessageCache,
-            gatewayCall: sendJsonMessage
+            gatewayCall: sendJsonMessage,
+            channelsInfo
         }}>
             {!ready || !gatewayConnected ? <Spinner text={spinnerText} subText={spinnerSubText} /> : <>
-                <b>{quarksInfo[4].channels[0].name}</b>
-                <MessageDisplay channel={quarksInfo[4].channels[0]} />
-                <MessageInput channel={quarksInfo[4].channels[0]} />
+                <QuarkSelector />
+                <Outlet />
+                {/*<b>{quarksInfo[4].channels[0].name}</b>*/}
+                {/*<MessageDisplay channel={quarksInfo[4].channels[0]} />*/}
+                {/*<MessageInput channel={quarksInfo[4].channels[0]} />*/}
             </>}
         </ClientContext.Provider>
     </>

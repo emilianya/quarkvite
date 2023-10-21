@@ -41,6 +41,12 @@ export default function AssetLoader() {
             nyaFile.queueCache("css/messages/message", "text")
             nyaFile.queueCache("css/messages/messageDisplay", "text")
             nyaFile.queueCache("css/messages/messageInput", "text")
+            nyaFile.queueCache("css/quarks/quark", "text")
+            nyaFile.queueCache("css/quarks/quarkButton", "text")
+            nyaFile.queueCache("css/quarks/quarkSelector", "text")
+            nyaFile.queueCache("css/channels/channel", "text")
+            nyaFile.queueCache("css/channels/channelButton", "text")
+            nyaFile.queueCache("css/channels/channelSelector", "text")
 
             await nyaFile.waitAllCached()
             setSpinnerImage(nyaFile.getCachedData("assets/spinner"))

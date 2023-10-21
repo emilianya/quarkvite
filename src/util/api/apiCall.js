@@ -18,6 +18,7 @@ export default async function apiCall (apiMethod, httpMethod, body = undefined, 
         if (httpMethod !== "GET") {
             headers.Accept = "application/json";
             headers["Content-Type"] = "application/json";
+            headers["lq-agent"] = "Quarkvite/0.0.dev"
             requestBody = JSON.stringify(body);
         }
         if (!skipAuth) headers.Authorization = `Bearer ${localConfig.token}`;
