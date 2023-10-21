@@ -69,7 +69,7 @@ function Quarklight() {
             version, setVersion,
             baseUrl, setBaseUrl
         }}>
-            <div>
+            <div className={"Quarklight-container"}>
                 <AudioProvider/>
                 <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
                 {ready ? <>

@@ -1,7 +1,9 @@
 import {NyaFile, StyleProvider} from "@litdevs/nyalib";
 import {useParams} from "react-router-dom";
-import {useContext, useMemo} from "react";
+import {useContext, useEffect, useMemo} from "react";
 import ClientContext from "../../context/ClientContext.js";
+import MessageDisplay from "../messages/MessageDisplay.jsx";
+import MessageInput from "../messages/MessageInput.jsx";
 
 export default function Channel() {
     let { channelId } = useParams();
@@ -14,7 +16,8 @@ export default function Channel() {
         channel ? <>
             <StyleProvider nyaFile={nyaFile} asset={"css/channels/channel"} />
             Current channel is: {channel.name} ({channel._id})
-
+            <MessageDisplay channel={channel} />
+            <MessageInput channel={channel} />
         </> : <>Couldn't load channel {JSON.stringify(channelsInfo)}</>
     )
 }

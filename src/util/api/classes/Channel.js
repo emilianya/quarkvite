@@ -41,6 +41,21 @@ export default class Channel {
         }
     }
 
+    async fetchMessages(setMessageCache) {
+        let res = await apiCall(`channel/${this._id}/messages`, "GET")
+        if (!res.success || !res.fetchSuccess) {
+            // TODO: implement a handler here
+            console.error(res.response.message);
+        }
+        setMessageCache(cache => {
+            if (!cache) cache = {};
+            if (!cache[this._id]) cache[this._id] = [];
+            cache[this._id].push(...res.response.messages)
+
+            return structuredClone(cache)
+        })
+    }
+
     event(eventData, clientState) {
         switch (eventData.eventId) {
             case "messageCreate":

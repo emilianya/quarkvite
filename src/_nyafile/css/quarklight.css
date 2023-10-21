@@ -1,3 +1,7 @@
 /*
     This css gets loaded for the whole application (outside the asset load spinner)
  */
+
+.Quarklight-container {
+    padding-bottom: 1rem;
+}
