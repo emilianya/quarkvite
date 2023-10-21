@@ -1,5 +1,5 @@
 import {NyaFile, StyleProvider} from "@litdevs/nyalib";
-import {useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import APIContext from "../context/APIContext.js";
 import Spinner from "./Spinner.jsx";
 import ClientContext from "../context/ClientContext.js";
@@ -7,6 +7,8 @@ import UserInformation from "../util/api/classes/UserInformation.js";
 import getUserQuarks from "../util/api/methods/getUserQuarks.js";
 import useWebSocket from "react-use-websocket";
 import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
+import MessageInput from "./messages/MessageInput.jsx";
+import MessageDisplay from "./messages/MessageDisplay.jsx";
 
 export default function Client () {
     let [ready, setReady] = useState(false);
@@ -16,13 +18,81 @@ export default function Client () {
     let nyaFile = new NyaFile();
     let {token, networkInformation, setNetworkInformation} = useContext(APIContext);
     let [gatewayUrl, setGatewayUrl] = useState(networkInformation.gateway);
+
+    // ClientContext
+    let [userInfo, setUserInfo] = useState(undefined);
+    let [quarksInfo, setQuarksInfo] = useState(undefined);
+    let [messageCache, setMessageCache] = useState({});
+    let [gateway, setGateway] = useState(undefined)
+    let channelsInfo = useMemo(() => {
+        if (!quarksInfo) return [];
+        return quarksInfo?.reduce((accumulator, quark) => {
+            console.log("Accumulator", accumulator)
+            console.log("Quark", quark)
+            return [...(accumulator.channels || accumulator), ...quark.channels]
+        })
+    }, [quarksInfo])
     let {sendJsonMessage} = useWebSocket(gatewayUrl, {
         protocols: token,
         onMessage: (message) => {
-            // TODO: implement something here
+            // Call event on the relevant object
             try {
-                let messageData = JSON.parse(message.data);
-                console.log(messageData)
+                let eventData = JSON.parse(message.data);
+                let clientState = {
+                    channelsInfo,
+                    quarksInfo,
+                    setQuarksInfo: (p) => setQuarksInfo(p),
+                    messageCache,
+                    setMessageCache: (p) => {
+                        console.log("Message cache updated")
+                        setMessageCache(p)
+                    } // I am not fully certain I need to be calling the state
+                }                                                    // update from in the component but whatever
+                switch (eventData.eventId) {
+                    case "messageCreate":
+                    case "messageDelete":
+                    case "messageUpdate": {
+                        const eventChannel = channelsInfo.find(c => c._id === eventData.message.channelId);
+                        if (!eventChannel) return console.error(`Message event received for unknown channel ${eventData.message.channelId}`, eventData);
+                        eventChannel.event(eventData, clientState);
+                        break;
+                    }
+                    case "channelCreate":
+                    case "channelDelete":
+                    case "channelUpdate": {
+                        const eventChannel = channelsInfo.find(c => c._id === eventData.channel._id);
+                        if (!eventChannel) return console.error(`Channel event received for unknown channel ${eventData.channel._id}`, eventData);
+                        eventChannel.event(eventData, clientState);
+                        break;
+                    }
+                    case "quarkUpdate":
+                    case "quarkDelete": {
+                        const eventQuark = quarksInfo.find(q => q._id === eventData.quark._id)
+                        if (!eventQuark) return console.error(`Quark event received for unknown quark ${eventData.quark._id}`, eventData);
+                        eventQuark.event(eventData);
+                        break;
+                    }
+                    case "memberUpdate":
+                    case "memberLeave":
+                    case "memberJoin": {
+                        // TODO implement something here
+                        break;
+                    }
+
+                    case "quarkOrderUpdate":
+                    case "nicknameUpdate": {
+                        // TODO implement something here
+                        break;
+                    }
+
+                    case "heartbeat":
+                    case "subscribe":
+                        break;
+                    default:
+                        console.error(`Unhandled event ${eventData.eventId}`)
+                }
+
+                console.debug(eventData)
             } catch (e) {
                 console.error("Invalid JSON from gateway?", e)
             }
@@ -46,10 +116,6 @@ export default function Client () {
         },
     }, !!gatewayUrl)
 
-    // ClientContext
-    let [userInfo, setUserInfo] = useState(undefined);
-    let [quarksInfo, setQuarksInfo] = useState(undefined);
-    let [gateway, setGateway] = useState(undefined)
 
     useEffect(() => {
         let abortController = new AbortController();
@@ -104,17 +170,23 @@ export default function Client () {
         }
     }, [networkInformation, setNetworkInformation, token]);
 
+    useEffect(() => {
+        console.log("Yup message cache has changed!")
+    }, [messageCache])
+
     return <>
         <StyleProvider nyaFile={nyaFile} asset={"css/client"} />
         <ClientContext.Provider value={{
             userInfo, setUserInfo,
             quarksInfo, setQuarksInfo,
             gateway, setGateway,
+            messageCache, setMessageCache,
             gatewayCall: sendJsonMessage
         }}>
             {!ready || !gatewayConnected ? <Spinner text={spinnerText} subText={spinnerSubText} /> : <>
-                {JSON.stringify(userInfo)}
-                {JSON.stringify(quarksInfo)}
+                <b>{quarksInfo[4].channels[0].name}</b>
+                <MessageDisplay channel={quarksInfo[4].channels[0]} />
+                <MessageInput channel={quarksInfo[4].channels[0]} />
             </>}
         </ClientContext.Provider>
     </>

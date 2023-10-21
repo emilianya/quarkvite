@@ -38,6 +38,9 @@ export default function AssetLoader() {
             nyaFile.queueCache("css/quarklight", "text")
             nyaFile.queueCache("css/loginForm", "text")
             nyaFile.queueCache("css/client", "text")
+            nyaFile.queueCache("css/messages/message", "text")
+            nyaFile.queueCache("css/messages/messageDisplay", "text")
+            nyaFile.queueCache("css/messages/messageInput", "text")
 
             await nyaFile.waitAllCached()
             setSpinnerImage(nyaFile.getCachedData("assets/spinner"))

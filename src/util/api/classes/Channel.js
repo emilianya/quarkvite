@@ -5,7 +5,6 @@ export default class Channel {
     name;
     description;
     quark;
-
     constructor(channel) {
         this.updateFrom(channel);
     }
@@ -29,6 +28,35 @@ export default class Channel {
             event: "subscribe",
             message: `channel_${this._id}`
         })
-        console.log(`Subscribed to channel_${this._id}`)
+        console.debug(`Subscribed to channel_${this._id}`)
+    }
+
+    async sendMessage(content) {
+        let res = await apiCall(`channel/${this._id}/messages`, "POST", {
+            content
+        })
+        if (!res.success || !res.fetchSuccess) {
+            // TODO: implement a handler here
+            console.error(res.response.message);
+        }
+    }
+
+    event(eventData, clientState) {
+        switch (eventData.eventId) {
+            case "messageCreate":
+                clientState.setMessageCache(cache => {
+                    if (!cache[eventData.message.channelId]) cache[eventData.message.channelId] = []
+                    cache[eventData.message.channelId].push({message: eventData.message, author: eventData.author})
+
+                    return structuredClone(cache)
+                })
+                break;
+            case "messageDelete":
+            case "messageUpdate":
+            case "channelCreate":
+            case "channelDelete":
+            case "channelUpdate":
+                console.warn(`Unhandled event ${eventData.eventId}`, eventData)
+        }
     }
 }

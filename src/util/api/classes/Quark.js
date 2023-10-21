@@ -1,5 +1,6 @@
 import apiCall from "../apiCall.js";
 import Channel from "./Channel.js";
+import React from "react";
 
 export default class Quark {
     channels = [];
