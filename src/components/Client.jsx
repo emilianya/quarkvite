@@ -1,5 +1,5 @@
 import {NyaFile, StyleProvider} from "@litdevs/nyalib";
-import React, {useContext, useEffect, useMemo, useState} from "react";
+import {useContext, useEffect, useMemo, useState} from "react";
 import APIContext from "../context/APIContext.js";
 import Spinner from "./Spinner.jsx";
 import ClientContext from "../context/ClientContext.js";
@@ -7,8 +7,6 @@ import UserInformation from "../util/api/classes/UserInformation.js";
 import getUserQuarks from "../util/api/methods/getUserQuarks.js";
 import useWebSocket from "react-use-websocket";
 import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
-import MessageInput from "./messages/MessageInput.jsx";
-import MessageDisplay from "./messages/MessageDisplay.jsx";
 import {Outlet} from "react-router-dom";
 import QuarkSelector from "./quarks/QuarkSelector.jsx";
 
@@ -29,8 +27,6 @@ export default function Client () {
     let channelsInfo = useMemo(() => {
         if (!quarksInfo) return [];
         return quarksInfo?.reduce((accumulator, quark) => {
-            console.log("Accumulator", accumulator)
-            console.log("Quark", quark)
             return [...(accumulator.channels || accumulator), ...quark.channels]
         })
     }, [quarksInfo])
@@ -94,7 +90,7 @@ export default function Client () {
                         console.error(`Unhandled event ${eventData.eventId}`)
                 }
 
-                console.debug(eventData)
+                // console.debug(eventData)
             } catch (e) {
                 console.error("Invalid JSON from gateway?", e)
             }
@@ -171,10 +167,6 @@ export default function Client () {
             setUserInfo(undefined);
         }
     }, [networkInformation, setNetworkInformation, token]);
-
-    useEffect(() => {
-        console.log("Yup message cache has changed!")
-    }, [messageCache])
 
     return <>
         <StyleProvider nyaFile={nyaFile} asset={"css/client"} />

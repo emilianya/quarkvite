@@ -1,6 +1,5 @@
 import apiCall from "../apiCall.js";
 import Channel from "./Channel.js";
-import React from "react";
 
 export default class Quark {
     channels = [];
@@ -39,7 +38,7 @@ export default class Quark {
             event: "subscribe",
             message: `quark_${this._id}`
         });
-        console.log(`Subscribed to quark_${this._id}`)
+        // console.debug(`Subscribed to quark_${this._id}`)
         this.channels.forEach(channel => channel.subscribe(gatewaySend));
     }
 }

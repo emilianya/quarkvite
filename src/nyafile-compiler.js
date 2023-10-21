@@ -1,3 +1,5 @@
+// noinspection all
+
 import AdmZip from "adm-zip"
 
 let zip = new AdmZip();

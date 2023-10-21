@@ -28,7 +28,7 @@ export default class Channel {
             event: "subscribe",
             message: `channel_${this._id}`
         })
-        console.debug(`Subscribed to channel_${this._id}`)
+        // console.debug(`Subscribed to channel_${this._id}`)
     }
 
     async sendMessage(content) {

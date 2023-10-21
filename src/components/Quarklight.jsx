@@ -9,12 +9,14 @@ import getNetworkInformation from "../util/api/methods/getNetworkInformation.js"
 import login from "../util/api/methods/login.js";
 import APIContext from "../context/APIContext.js";
 import Spinner from "./Spinner.jsx";
+import AssetContext from "../context/AssetContext.js";
 
 function Quarklight() {
     let [ready, setReady] = useState(false)
     let [spinnerText, setSpinnerText] = useState("Loading...");
     let [spinnerSubText, setSpinnerSubText] = useState("Loading...");
     let {setBgm} = useContext(AudioContext);
+    let {setNyaUrl} = useContext(AssetContext);
     let nyaFile = new NyaFile();
     let [token, setToken] = useState("");
     let [networkInformation, setNetworkInformation] = useState("");
@@ -72,6 +74,13 @@ function Quarklight() {
             <div className={"Quarklight-container"}>
                 <AudioProvider/>
                 <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
+                <form onSubmit={(e) => {
+                    e.preventDefault()
+                    setNyaUrl(e.target.elements[0].value || undefined)
+                }}>
+                    <input type={"text"} placeholder={"Custom nyafile url"} />
+                    <input type={"submit"} />
+                </form>
                 {ready ? <>
                     {token ? <Outlet/> : <LoginForm />}
                 </> : <Spinner text={spinnerText} subText={spinnerSubText} />}

@@ -23,7 +23,7 @@ export default function MessageDisplay({channel}) {
 
     useEffect(() => {
         if (!messageCache[channel._id]) {
-            channel.fetchMessages(p => setMessageCache(p))
+            channel.fetchMessages(p => setMessageCache(p)).then()
         }
     }, [channel, messageCache, setMessageCache])
 

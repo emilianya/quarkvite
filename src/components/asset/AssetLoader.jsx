@@ -14,7 +14,6 @@ export default function AssetLoader() {
     let [spinnerSubText, setSpinnerSubText] = useState("Loading...");
     let [spinnerImage, setSpinnerImage] = useState(logo)
     let {nyaUrl} = useContext(AssetContext);
-    let nyaFile = new NyaFile();
     let {setNyaUrl} = useContext(AssetContext);
 
     // Default asset load
@@ -22,6 +21,7 @@ export default function AssetLoader() {
         // Hacky thing to make sure this only happens once
         if (AssetLoader?.loadedBefore === true) return;
         AssetLoader.loadedBefore = true;
+        let nyaFile = new NyaFile();
 
         setReady(false);
         (async () => {
@@ -59,7 +59,7 @@ export default function AssetLoader() {
 
             setDefaultReady(true)
         })()
-    }, []);
+    }, [setNyaUrl]);
 
     // Custom asset load
     // When custom nya file url is changed from context kick client back to loader for full asset reload
@@ -71,6 +71,7 @@ export default function AssetLoader() {
             let nyaFile = new NyaFile();
             // If it was cleared (there is a previous nyaFile) clear it from NyaFile and reload things
             // Otherwise return
+            console.log(nyaFile.nyaFile)
             if (nyaFile.nyaFile) {
                 // There was a nyafile set before, clear it
                 setReady(false);
@@ -79,6 +80,9 @@ export default function AssetLoader() {
                     setSpinnerText("Removing custom nyafile")
                     setSpinnerSubText("Caching assets")
                     nyaFile.nyaFile = undefined;
+                    let customNyaFile = await localForage.getItem("customNyaFile");
+                    customNyaFile.url = nyaUrl;
+                    await localForage.setItem("customNyaFile", customNyaFile);
                     await nyaFile.explodeCache()
                     setReady(true)
                 })();
@@ -101,12 +105,19 @@ export default function AssetLoader() {
             setSpinnerSubText("Downloading nyafile")
             let nyaFile = new NyaFile();
             await nyaFile.load(nyaUrl);
+            let customNyaFile = await localForage.getItem("customNyaFile");
+            customNyaFile.url = nyaUrl;
+            await localForage.setItem("customNyaFile", customNyaFile);
             setSpinnerSubText("Caching assets")
             await nyaFile.waitAllCached()
             setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
             setReady(true)
         })()
 
+        // TODO: Fix this
+        // Currently putting `ready` in the dependencies unleashes hell https://wanderers.cloud/file/jSm1lQ.gif
+        // (This link is probably dead by the time you're fixing it so just https://tryitands.ee)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nyaUrl, defaultReady]);
 
     return <>
