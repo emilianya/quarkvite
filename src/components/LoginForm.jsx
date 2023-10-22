@@ -81,7 +81,7 @@ export default function LoginForm() {
             document.querySelector(".LoginForm-container").style.display = "none";
             setThinking(false)
             setToken(loginInfo.res.response.access_token)
-        }, 750)
+        }, 740)
     }
 
     return <>
@@ -127,7 +127,7 @@ function LoginFormError({error}) {
         }
         let goAwayTimeout = setTimeout(() => {
             setShouldShow(false)
-        }, 750)
+        }, 740)
 
         document.querySelector(".LoginFormError-container-wrapper")?.animate(animationFrames, animationConfig);
         document.querySelector(".LoginFormError-container")?.animate(animationFrames, animationConfig);
