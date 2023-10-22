@@ -14,7 +14,12 @@
     perspective: 1000px;
     perspective-origin: 50% 50%;
     overflow-x: hidden;
+    font-family: Main, sans-serif;
     /*animation: background-scroll 10s linear infinite;*/
+}
+
+input {
+    font-family: Main, sans-serif;
 }
 
 /* I didn't like this effect, Hakase liked it though so it might come back when I feel like fixing it (it doesnt loop cleanly)

@@ -4,7 +4,6 @@ import APIContext from "../context/APIContext.js";
 import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
 import login from "../util/api/methods/login.js";
 
-
 let animationFrames = [
     { transform: "scale(1, 1)", offset: 0},
     { transform: "scale(1, 1.05)", offset: 0.2},
@@ -86,7 +85,7 @@ export default function LoginForm() {
     }
 
     return <>
-        {/*<StyleProvider nyaFile={nyaFile} asset={"css/loginForm"}/>*/}
+        <StyleProvider nyaFile={nyaFile} asset={"css/loginForm"}/>
         <div className="LoginForm-container-wrapper">
             <div className="LoginForm-container">
                 <p className="LoginForm-headerText">Login</p>
@@ -142,6 +141,7 @@ function LoginFormError({error}) {
         <div className="LoginFormError-container-wrapper">
             <div className="LoginFormError-container">
                 <StyleProvider nyaFile={nyaFile} asset={"css/loginFormError"} />
+                <p className="LoginFormError-errorHeader">Error!</p>
                 <p className="LoginFormError-errorText">{error}</p>
             </div>
         </div>

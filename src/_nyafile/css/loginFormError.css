@@ -7,10 +7,17 @@
 .LoginFormError-container {
     background-color: #ff9999;
     margin: 1rem 3rem 1rem 4rem;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 2rem;
+    text-align: center;
     clip-path: polygon(2.5% 0%, 100% 0%, 97.5% 100%, 0% 100%);
     color: black;
     animation: 0.5s ease-out 0s 1 loginFormOpen;
+}
+
+.LoginFormError-errorHeader {
+    text-transform: uppercase;
+    font-family: Main-Bold, sans-serif;
+    font-weight: bold;
 }
 
 .LoginFormError-errorText {

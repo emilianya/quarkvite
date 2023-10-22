@@ -70,6 +70,17 @@ function Quarklight() {
             version, setVersion,
             baseUrl, setBaseUrl
         }}>
+            <style type="text/css">
+                {`@font-face{
+                    font-family: Main;
+                    src: url(${nyaFile.getCachedData("fonts/main")});
+                }`}
+                {`@font-face{
+                    font-family: Main-Bold;
+                    src: url(${nyaFile.getCachedData("fonts/bold")});
+                }`}
+
+            </style>
             <div className={"Quarklight-container"} style={{backgroundImage: `url(${nyaFile.getCachedData("assets/bg-tileable")})`}}>
                 <AudioProvider/>
                 <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
