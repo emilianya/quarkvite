@@ -1,0 +1,13 @@
+.QuarkSelector-container {
+    background-color: #c571cd;
+    padding: 1rem 1rem 1rem 3rem;
+    clip-path: polygon(3rem 0%, 100% 0%, 100% 100%, 0% 100%);
+    width: 16rem;
+}
+
+.QuarkSelector-contentWrapper {
+    transform: rotate(2.5deg)
+}
+
+.QuarkSelector-tooltip {
+}

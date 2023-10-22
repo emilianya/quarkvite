@@ -126,7 +126,6 @@ export default function Client () {
                     abortController.signal.onabort = () => {
                             aborted = true;
                     }
-
                     if (!networkInformation) {
                         setSpinnerSubText("Fetching network information")
                         let networkInfo = await getNetworkInformation()
@@ -168,7 +167,7 @@ export default function Client () {
         }
     }, [networkInformation, setNetworkInformation, token]);
 
-    return <>
+    return <div className="Client-container">
         <StyleProvider nyaFile={nyaFile} asset={"css/client"} />
         <ClientContext.Provider value={{
             userInfo, setUserInfo,
@@ -179,12 +178,11 @@ export default function Client () {
             channelsInfo
         }}>
             {!ready || !gatewayConnected ? <Spinner text={spinnerText} subText={spinnerSubText} /> : <>
+                <div className="Client-contentWrapper">
+                    <Outlet />
+                </div>
                 <QuarkSelector />
-                <Outlet />
-                {/*<b>{quarksInfo[4].channels[0].name}</b>*/}
-                {/*<MessageDisplay channel={quarksInfo[4].channels[0]} />*/}
-                {/*<MessageInput channel={quarksInfo[4].channels[0]} />*/}
             </>}
         </ClientContext.Provider>
-    </>
+    </div>
 }

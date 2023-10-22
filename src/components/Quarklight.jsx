@@ -18,7 +18,7 @@ function Quarklight() {
     let {setNyaUrl} = useContext(AssetContext);
     let nyaFile = new NyaFile();
     let [token, setToken] = useState("");
-    let [networkInformation, setNetworkInformation] = useState("");
+    let [networkInformation, setNetworkInformation] = useState({});
     let [version, setVersion] = useState("");
     let [baseUrl, setBaseUrl] = useState("");
 
@@ -29,13 +29,15 @@ function Quarklight() {
             setSpinnerText("Preparing API")
             setSpinnerSubText("Fetching stored configuration")
             let localConfig = await localForage.getItem("localConfig") || {};
-            let lBaseUrl = localConfig?.network?.baseUrl || "https://lightquark.network";
+            let lBaseUrl = localConfig?.network?.baseUrl || localConfig?.networkInformation?.baseUrl || "https://lightquark.network";
+            console.log(lBaseUrl, localConfig?.network?.baseUrl, localConfig?.networkInformation?.baseUrl)
             let lVersion = localConfig?.network?.version || "v2";
             let lToken = localConfig?.token || null;
             let lNetwork = localConfig?.network || {};
             let lNetworkInformation = localConfig?.networkInformation || {};
             setBaseUrl(lBaseUrl);
             setVersion(lVersion);
+            setNetworkInformation(lNetworkInformation);
             setToken(lToken);
             localConfig.network = lNetwork;
             localConfig.network.baseUrl = lBaseUrl;
@@ -84,6 +86,9 @@ function Quarklight() {
             <div className={"Quarklight-container"} style={{backgroundImage: `url(${nyaFile.getCachedData("assets/bg-tileable")})`}}>
                 <AudioProvider/>
                 <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
+                {ready ? <>
+                    {token ? <Outlet/> : <LoginForm />}
+                </> : <Spinner text={spinnerText} subText={spinnerSubText} />}
                 <form onSubmit={(e) => {
                     e.preventDefault()
                     setNyaUrl(e.target.elements[0].value || undefined)
@@ -99,9 +104,6 @@ function Quarklight() {
                         await localForage.setItem("localConfig", localConfig)
                     })();
                 }}>Log out</button>
-                {ready ? <>
-                    {token ? <Outlet/> : <LoginForm />}
-                </> : <Spinner text={spinnerText} subText={spinnerSubText} />}
             </div>
         </APIContext.Provider>)
 }

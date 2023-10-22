@@ -132,7 +132,6 @@ function LoginFormError({error}) {
         document.querySelector(".LoginFormError-container-wrapper")?.animate(animationFrames, animationConfig);
         document.querySelector(".LoginFormError-container")?.animate(animationFrames, animationConfig);
         return () => {
-            console.log("Cancelled")
             clearTimeout(goAwayTimeout)
         }
     }, [error]);
