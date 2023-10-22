@@ -112,7 +112,7 @@ export default function Client () {
             message: JSON.stringify({event: "heartbeat", message: "THE MOST BORING HEARTBEAT MESSAGE EVER :("}),
             interval: 15000
         },
-    }, !!gatewayUrl)
+    }, !!gatewayUrl && !!quarksInfo)
 
 
     useEffect(() => {

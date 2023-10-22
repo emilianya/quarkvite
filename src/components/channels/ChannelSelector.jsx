@@ -7,8 +7,7 @@ export default function ChannelSelector({ quark }) {
     let nyaFile = new NyaFile()
 
     let [channelButtons, setChannelButtons] = useState([]);
-    let quarkPortal = document.querySelector("#channelPortal");
-    console.log("Quark Portal", quarkPortal)
+    let quarkPortal = document.querySelector("#channelPortal"); // TODO: Investigate if this causes a bunch of issues
 
     useEffect(() => {
         setChannelButtons(quark.channels.map(channel => {
