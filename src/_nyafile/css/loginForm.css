@@ -1,0 +1,98 @@
+.LoginForm-container {
+    background-color: #dddddd;
+    margin: 1rem 3rem 1rem 4rem;
+    padding: 1rem;
+    clip-path: polygon(2.5% 0%, 100% 0%, 97.5% 100%, 0% 100%);
+    color: black;
+    animation: 0.75s ease-out 0s 1 loginFormOpen;
+}
+.LoginForm-container-wrapper {
+    filter: drop-shadow(-1rem 1rem var(--accent));
+    animation: 0.75s ease-out 0s 1 loginFormOpen;
+}
+.LoginForm-headerText {
+    text-align: center;
+    font-weight: bold;
+}
+.LoginForm-form {
+    display: flex;
+    flex-direction: column;
+}
+.LoginForm-emailInput {
+}
+.LoginForm-passwordInput {
+}
+.LoginForm-networkInput {
+}
+.LoginForm-submitWrapper {
+    width: min(8rem, 40%);
+    margin: 0 auto 0.2rem;
+}
+.LoginForm-submitWrapper:has(input:active) {
+}
+.LoginForm-submit {
+    width: min(8rem, 100%);
+    outline: none;
+    clip-path: polygon(2.5% 0%, 100% 0%, 97.5% 100%, 0% 100%);
+    border-width: 0;
+    border-bottom-width: 3px;
+    border-color: var(--accent);
+    padding: 0.5rem;
+    background-color: color-mix(in srgb,var(--accent), #fff 40%);
+}
+
+.LoginForm-submit:focus, .LoginForm-submit:hover {
+    background-color: color-mix(in srgb,var(--accent), #fff 50%);
+}
+.LoginForm-submit:active {
+    background-color: color-mix(in srgb,var(--accent), #fff 60%);
+    border-color: #ffffff00
+}
+.LoginForm-input-box {
+    width: min(16rem, 80%);
+    margin: 0 auto 0.2rem;
+    outline: none;
+    clip-path: polygon(2.5% 0%, 100% 0%, 97.5% 100%, 0% 100%);
+    padding: 0.5rem;
+    border-width: 0;
+    background-color: #ffffff;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-color: #ffffff00;
+}
+
+.LoginForm-input-box:focus {
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    /*background-color: #ffeeff;*/
+    background-color: color-mix(in srgb,var(--accent), #fff 85%);
+    border-color: var(--accent);
+}
+
+.LoginForm-input-box-invalid {
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    background-color: #ffeeee;
+    border-color: red;
+}
+
+@keyframes loginFormOpen {
+    /*
+            scale(x, y)
+     */
+    0% {
+        transform: scale(0.1, 0.2);
+    }
+    40% {
+        transform: scale(1.05, 0.3);
+    }
+    60% {
+        transform: scale(1, 0.3);
+    }
+    80% {
+        transform: scale(1, 1.05);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}

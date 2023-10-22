@@ -4,6 +4,7 @@ import localForage from "localforage";
 export default async function getNetworkInformation(network) {
     let localConfig = await localForage.getItem("localConfig")
     localConfig.network.baseUrl = network;
+    await localForage.setItem("localConfig", localConfig)
     try {
         let res = await apiCall("network", "GET", undefined, true);
         res = res.raw;

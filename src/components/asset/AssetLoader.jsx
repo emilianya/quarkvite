@@ -34,6 +34,7 @@ export default function AssetLoader() {
 
             // Load image assets
             nyaFile.queueCache("assets/spinner")
+            nyaFile.queueCache("assets/bg-tileable")
             // Load CSS for components
             nyaFile.queueCache("css/quarklight", "text")
             nyaFile.queueCache("css/loginForm", "text")

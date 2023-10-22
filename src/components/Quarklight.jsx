@@ -1,15 +1,16 @@
 import {useContext, useEffect, useState} from 'react'
-import {NyaFile, NyaSoundClickable, StyleProvider} from "@litdevs/nyalib";
+import {NyaFile, StyleProvider} from "@litdevs/nyalib";
 import AudioContext from "../context/AudioContext.js";
 import AudioProvider from "./nyaUtil/AudioProvider.jsx";
 import {Outlet} from "react-router-dom";
 import localForage from "localforage";
 import verifyValidToken from "../util/api/methods/verifyValidToken.js";
-import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
-import login from "../util/api/methods/login.js";
 import APIContext from "../context/APIContext.js";
 import Spinner from "./Spinner.jsx";
 import AssetContext from "../context/AssetContext.js";
+import LoginForm from "./LoginForm.jsx";
+
+import "../_nyafile/css/loginForm.css"
 
 function Quarklight() {
     let [ready, setReady] = useState(false)
@@ -71,7 +72,7 @@ function Quarklight() {
             version, setVersion,
             baseUrl, setBaseUrl
         }}>
-            <div className={"Quarklight-container"}>
+            <div className={"Quarklight-container"} style={{backgroundImage: `url(${nyaFile.getCachedData("assets/bg-tileable")})`}}>
                 <AudioProvider/>
                 <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
                 <form onSubmit={(e) => {
@@ -81,69 +82,19 @@ function Quarklight() {
                     <input type={"text"} placeholder={"Custom nyafile url"} />
                     <input type={"submit"} />
                 </form>
+                <button onClick={() => {
+                    setToken(null);
+                    (async () => {
+                        let localConfig = await localForage.getItem("localConfig");
+                        localConfig.token = null;
+                        await localForage.setItem("localConfig", localConfig)
+                    })();
+                }}>Log out</button>
                 {ready ? <>
                     {token ? <Outlet/> : <LoginForm />}
                 </> : <Spinner text={spinnerText} subText={spinnerSubText} />}
             </div>
         </APIContext.Provider>)
-}
-
-function LoginForm() {
-    let nyaFile = new NyaFile();
-
-    let {baseUrl, setToken, setNetworkInformation} = useContext(APIContext)
-
-    let [email, setEmail] = useState("");
-    let [password, setPassword] = useState("");
-    let [network, setNetwork] = useState(baseUrl);
-    let [errorAffects, setErrorAffects] = useState([]);
-    let [error, setError] = useState("");
-
-    const formSubmitHandler = async (e) => {
-        e.preventDefault();
-        setError("");
-        setErrorAffects([])
-        if (!email || !password || !network)
-        {
-            setError("All fields are required")
-            setErrorAffects([!email && "email", !password && "password", !network && "network"])
-            return;
-        }
-        let emailRegex = /[^@]+@[^@]+/
-        if (!emailRegex.test(email)) {
-            setError("Invalid email")
-            setErrorAffects(["email"])
-            return;
-        }
-        let networkInfo = await getNetworkInformation(network)
-        if (!networkInfo.success) {
-            setError(networkInfo.error)
-            setErrorAffects(["network"])
-            return;
-        }
-        setNetworkInformation(networkInfo.res)
-        let loginInfo = await login(email, password)
-        console.log(loginInfo)
-        if (!loginInfo.success) {
-            setError(loginInfo.error);
-            return;
-        }
-        setToken(loginInfo.res.response.access_token)
-    }
-
-    return <>
-        <StyleProvider nyaFile={nyaFile} asset={"css/loginForm"}/>
-        <div className="LoginForm-container">
-            <form className="LoginForm-form" onSubmit={formSubmitHandler}>
-                <input className="LoginForm-emailInput input-box" placeholder="Email" onInput={(e) => setEmail(e.target.value)} type="text" autoComplete="email"/>
-                <input className="LoginForm-passwordInput input-box" placeholder="Password" onInput={(e) => setPassword(e.target.value)} type="password" autoComplete="current-password"/>
-                <input className="LoginForm-networkInput input-box" placeholder="Network url" onInput={(e) => setNetwork(e.target.value)} type="text" defaultValue={baseUrl} autoComplete="off"/>
-                <NyaSoundClickable nyaFile={nyaFile} asset="assets/sfx"><input type="submit" value={"Login"} /></NyaSoundClickable>
-            </form>
-            {error}
-            {JSON.stringify(errorAffects)}
-        </div>
-    </>
 }
 
 export default Quarklight
