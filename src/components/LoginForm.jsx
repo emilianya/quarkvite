@@ -1,8 +1,24 @@
-import {NyaFile, NyaSoundClickable} from "@litdevs/nyalib";
-import {useContext, useState} from "react";
+import {NyaFile, NyaSoundClickable, StyleProvider} from "@litdevs/nyalib";
+import {useContext, useEffect, useState} from "react";
 import APIContext from "../context/APIContext.js";
 import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
 import login from "../util/api/methods/login.js";
+
+// TODO: REMOVE THESE BEFORE DEPLOYMENT
+import "../_nyafile/css/loginForm.css"
+import "../_nyafile/css/loginFormError.css";
+
+let animationFrames = [
+    { transform: "scale(1, 1)", offset: 0},
+    { transform: "scale(1, 1.05)", offset: 0.2},
+    { transform: "scale(1, 0.3)", offset: 0.4},
+    { transform: "scale(1.05, 0.3)", offset: 0.6},
+    { transform: "scale(0, 0)", offset: 1},
+];
+let animationConfig = {
+    duration: 750,
+    iterations: 1
+};
 
 export default function LoginForm() {
     let nyaFile = new NyaFile();
@@ -26,7 +42,7 @@ export default function LoginForm() {
         {
             setThinking(false)
             setError("All fields are required")
-            setErrorAffects([!email && "email", !password && "password", !network && "network"])
+            setErrorAffects([!email && "email", !password && "password", !network && "network"].filter(e => !!e))
             return;
         }
         let emailRegex = /[^@]+@[^@]+/
@@ -62,8 +78,14 @@ export default function LoginForm() {
             }
             return;
         }
-        setThinking(false)
-        setToken(loginInfo.res.response.access_token)
+        document.querySelector(".LoginForm-container-wrapper")?.animate(animationFrames, animationConfig);
+        document.querySelector(".LoginForm-container")?.animate(animationFrames, animationConfig);
+        setTimeout(() => {
+            document.querySelector(".LoginForm-container-wrapper").style.display = "none";
+            document.querySelector(".LoginForm-container").style.display = "none";
+            setThinking(false)
+            setToken(loginInfo.res.response.access_token)
+        }, 750)
     }
 
     return <>
@@ -90,11 +112,41 @@ export default function LoginForm() {
                         }
                         setNetwork(e.target.value)
                     }} type="text" defaultValue={baseUrl} autoComplete="off"/>
-                    <NyaSoundClickable nyaFile={nyaFile} asset="assets/sfx"><div className="LoginForm-submitWrapper"><input className="LoginForm-submit" type="submit" value={thinking ? "..." : "Login"} /></div></NyaSoundClickable>
+                    <NyaSoundClickable nyaFile={nyaFile} asset="assets/sfx"><div className="LoginForm-submitWrapper"><input className="LoginForm-submit" type="submit" disabled={errorAffects.length > 0} value={thinking ? "..." : "Login"} /></div></NyaSoundClickable>
                 </form>
-                {error}
-                {JSON.stringify(errorAffects)}
             </div>
         </div>
+        <LoginFormError error={errorAffects.length > 0 && error} />
     </>
+}
+
+function LoginFormError({error}) {
+    let [shouldShow, setShouldShow] = useState(!!error);
+    let nyaFile = new NyaFile()
+
+    useEffect(() => {
+        if (error) {
+            setShouldShow(true);
+            return;
+        }
+        let goAwayTimeout = setTimeout(() => {
+            setShouldShow(false)
+        }, 750)
+
+        document.querySelector(".LoginFormError-container-wrapper")?.animate(animationFrames, animationConfig);
+        document.querySelector(".LoginFormError-container")?.animate(animationFrames, animationConfig);
+        return () => {
+            console.log("Cancelled")
+            clearTimeout(goAwayTimeout)
+        }
+    }, [error]);
+
+    return shouldShow ? (
+        <div className="LoginFormError-container-wrapper">
+            <div className="LoginFormError-container">
+                <StyleProvider nyaFile={nyaFile} asset={"css/loginFormError"} />
+                <p className="LoginFormError-errorText">{error}</p>
+            </div>
+        </div>
+    ) : <></>
 }

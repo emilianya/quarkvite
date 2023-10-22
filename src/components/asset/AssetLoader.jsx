@@ -38,6 +38,7 @@ export default function AssetLoader() {
             // Load CSS for components
             nyaFile.queueCache("css/quarklight", "text")
             nyaFile.queueCache("css/loginForm", "text")
+            nyaFile.queueCache("css/loginFormError", "text")
             nyaFile.queueCache("css/client", "text")
             nyaFile.queueCache("css/messages/message", "text")
             nyaFile.queueCache("css/messages/messageDisplay", "text")

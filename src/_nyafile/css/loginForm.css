@@ -48,6 +48,11 @@
     background-color: color-mix(in srgb,var(--accent), #fff 60%);
     border-color: #ffffff00
 }
+.LoginForm-submit:disabled {
+    background-color: color-mix(in srgb,var(--accent), #fff 60%);
+    border-color: #ffffff00;
+    cursor: not-allowed;
+}
 .LoginForm-input-box {
     width: min(16rem, 80%);
     margin: 0 auto 0.2rem;

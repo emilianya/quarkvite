@@ -10,8 +10,6 @@ import Spinner from "./Spinner.jsx";
 import AssetContext from "../context/AssetContext.js";
 import LoginForm from "./LoginForm.jsx";
 
-import "../_nyafile/css/loginForm.css"
-
 function Quarklight() {
     let [ready, setReady] = useState(false)
     let [spinnerText, setSpinnerText] = useState("Loading...");
