@@ -20,6 +20,7 @@ export default function QuarkSelector() {
         }))
     }, [quarksInfo, setQuarkIcons])
 
+    // TODO: scroll bars less crap
     return (
         <>
             <div className="QuarkSelector-containerWrapper">
