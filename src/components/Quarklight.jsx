@@ -87,23 +87,26 @@ function Quarklight() {
                 <AudioProvider/>
                 <StyleProvider nyaFile={nyaFile} asset="css/quarklight"/>
                 {ready ? <>
-                    {token ? <Outlet/> : <LoginForm />}
+                    {token ?
+                        <Outlet/> : <LoginForm />}
                 </> : <Spinner text={spinnerText} subText={spinnerSubText} />}
-                <form onSubmit={(e) => {
-                    e.preventDefault()
-                    setNyaUrl(e.target.elements[0].value || undefined)
-                }}>
-                    <input type={"text"} placeholder={"Custom nyafile url"} />
-                    <input type={"submit"} />
-                </form>
-                <button onClick={() => {
-                    setToken(null);
-                    (async () => {
-                        let localConfig = await localForage.getItem("localConfig");
-                        localConfig.token = null;
-                        await localForage.setItem("localConfig", localConfig)
-                    })();
-                }}>Log out</button>
+                <div className={"bullshitContainer"}>
+                    <form onSubmit={(e) => {
+                        e.preventDefault()
+                        setNyaUrl(e.target.elements[0].value || undefined)
+                    }}>
+                        <input type={"text"} placeholder={"Custom nyafile url"} />
+                        <input type={"submit"} />
+                    </form>
+                    <button onClick={() => {
+                        setToken(null);
+                        (async () => {
+                            let localConfig = await localForage.getItem("localConfig");
+                            localConfig.token = null;
+                            await localForage.setItem("localConfig", localConfig)
+                        })();
+                    }}>Log out</button>
+                </div>
             </div>
         </APIContext.Provider>)
 }

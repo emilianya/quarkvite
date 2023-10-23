@@ -1,7 +1,8 @@
 .LoginFormError-container-wrapper {
-    margin-top: 2rem;
     filter: drop-shadow(-1rem 1rem #ff4444);
     animation: 0.5s ease-out 0s 1 loginFormOpen;
+    max-width: 32rem;
+    margin: 2rem auto 0;
 }
 
 .LoginFormError-container {

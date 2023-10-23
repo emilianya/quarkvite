@@ -1,0 +1,55 @@
+.ChannelButton-container {
+    display: flex;
+    margin-bottom: 0.2rem;
+    background-color: var(--accent);
+    /*clip-path: polygon(0 0, calc(100% - 0.5rem) 0, 100% 100%, 0.5rem 100%);*/
+    clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+    width: 100%;
+}
+
+.ChannelButton-selectedContainer {
+    background-color: white;
+}
+
+.ChannelButton-innerContainer {
+    color: white;
+    padding: 0 0.3rem;
+    width: 95%;
+    border-width: 1px;
+}
+
+.ChannelButton-selectedInnerContainer {
+    background-color: white;
+    color: black
+}
+
+.ChannelButton-nameText:before {
+    content: "# ";
+    font-family: Main-Bold, sans-serif;
+    font-size: medium;
+}
+
+.ChannelButton-nameText {
+    font-size: small;
+}
+
+a:has(.ChannelButton-nameText) {
+    text-decoration: none;
+}
+
+.ChannelButton-endCapLeft {
+    width: 5%;
+}
+
+.ChannelButton-selectedEndCapLeft {
+}
+
+/*.ChannelButton-endCapRight {*/
+/*    width: 5%;*/
+/*    background-color: var(--accent);*/
+/*    clip-path: polygon(0 0, 0 100%, 100% 100%);*/
+/*}*/
+
+/*.ChannelButton-selectedEndCapRight {*/
+/*    background-color: white;*/
+/*}*/

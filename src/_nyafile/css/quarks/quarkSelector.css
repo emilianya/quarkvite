@@ -1,12 +1,39 @@
+.QuarkSelector-containerWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: color-mix(in srgb,var(--accent), #ffffff00 40%);
+    backdrop-filter: blur(2px);
+    clip-path: polygon(2.5rem 0, 100% 0%, 100% 100%, 0% 100%);
+    flex-shrink: 0;
+}
+.QuarkSelector-top {
+    padding-left: 3rem;
+}
+.QuarkSelector-collapseButton {
+    margin: 0.5rem;
+}
 .QuarkSelector-container {
-    background-color: #c571cd;
-    padding: 1rem 1rem 1rem 3rem;
-    clip-path: polygon(3rem 0%, 100% 0%, 100% 100%, 0% 100%);
-    width: 16rem;
+    min-width: 24rem;
+    display: flex;
+    flex-direction: row;
+    padding: 0.2rem 1rem 1rem 0;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-end;
+    overflow: hidden;
 }
 
 .QuarkSelector-contentWrapper {
-    transform: rotate(2.5deg)
+    padding-right: 0.5rem;
+    flex: 0 0 auto;
+    overflow-x: hidden;
+    overflow-Y: scroll;
+}
+
+.QuarkSelector-channelWrapper {
+    display: flex;
+    flex: 1;
 }
 
 .QuarkSelector-tooltip {

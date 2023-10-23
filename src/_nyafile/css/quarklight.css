@@ -22,6 +22,11 @@ input {
     font-family: Main, sans-serif;
 }
 
+.bullshitContainer {
+    position: absolute;
+    top: 20px;
+}
+
 /* I didn't like this effect, Hakase liked it though so it might come back when I feel like fixing it (it doesnt loop cleanly)
 @keyframes background-scroll {*/
 /*    0% {*/

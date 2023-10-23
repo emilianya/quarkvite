@@ -1,0 +1,7 @@
+.ChannelSelector-container {
+    margin-left: 3rem;
+    margin-right: 0.5rem;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-Y: scroll;
+}

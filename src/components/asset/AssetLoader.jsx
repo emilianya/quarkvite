@@ -35,6 +35,7 @@ export default function AssetLoader() {
             // Load image assets
             nyaFile.queueCache("assets/spinner")
             nyaFile.queueCache("assets/bg-tileable")
+            nyaFile.queueCache("assets/dm-icon")
             // Load fonts
             nyaFile.queueCache("fonts/main")
             nyaFile.queueCache("fonts/bold")

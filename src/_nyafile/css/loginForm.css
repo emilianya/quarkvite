@@ -9,6 +9,8 @@
 .LoginForm-container-wrapper {
     filter: drop-shadow(-1rem 1rem var(--accent));
     animation: 0.75s ease-out 0s 1 loginFormOpen;
+    max-width: 32rem;
+    margin: 0 auto;
 }
 .LoginForm-headerText {
     text-align: center;
