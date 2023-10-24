@@ -1,0 +1,6 @@
+.MessageDisplay-container {
+    max-height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-wrap: anywhere;
+}

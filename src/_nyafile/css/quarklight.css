@@ -24,7 +24,7 @@ input {
 
 .bullshitContainer {
     position: absolute;
-    top: 20px;
+    bottom: 20px;
 }
 
 /* I didn't like this effect, Hakase liked it though so it might come back when I feel like fixing it (it doesnt loop cleanly)
