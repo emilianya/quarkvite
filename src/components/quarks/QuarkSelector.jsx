@@ -94,9 +94,9 @@ export default function QuarkSelector() {
                     <button className="QuarkSelector-collapseButton" onClick={() => setCollapseSidebar(p => !p)}>≡</button>
                 </div>
                 <div className="QuarkSelector-container"
-                     style={{
-                         display: false ? "none" : ""
-                     }}>
+                     // style={{
+                     //     display: false ? "none" : ""
+                     // }}>
                     <StyleProvider nyaFile={nyaFile} asset={"css/quarks/quarkSelector"} />
                     <div id="channelPortal" className="QuarkSelector-channelWrapper">
 
