@@ -1,5 +1,10 @@
 .Client-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
+    max-width: 100%;
+}
+
+.Client-contentWrapper {
+    flex: 1;
 }

@@ -5,7 +5,7 @@
     background-color: color-mix(in srgb,var(--accent), #ffffff00 40%);
     backdrop-filter: blur(2px);
     clip-path: polygon(2.5rem 0, 100% 0%, 100% 100%, 0% 100%);
-    flex-shrink: 0;
+    flex: 0 0 auto;
 }
 .QuarkSelector-top {
     padding-left: 3rem;
@@ -37,4 +37,25 @@
 }
 
 .QuarkSelector-tooltip {
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f100;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb,var(--accent), #ffffff 30%);
+    border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb,var(--accent), #ffffff 20%);
 }

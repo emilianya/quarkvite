@@ -9,8 +9,8 @@ import {Tooltip} from "react-tooltip";
 
 export default function QuarkSelector() {
     let {quarksInfo} = useContext(ClientContext)
-    let [collapsed, setCollapsed] = useState(window.innerWidth < 500);
     let nyaFile = new NyaFile()
+    let {collapseSidebar, setCollapseSidebar} = useContext(ClientContext);
 
     let [quarkIcons, setQuarkIcons] = useState([]);
 
@@ -20,16 +20,15 @@ export default function QuarkSelector() {
         }))
     }, [quarksInfo, setQuarkIcons])
 
-    // TODO: scroll bars less crap
     return (
         <>
             <div className="QuarkSelector-containerWrapper">
                 <div className="QuarkSelector-top">
-                    <button className="QuarkSelector-collapseButton" onClick={() => setCollapsed(p => !p)}>≡</button>
+                    <button className="QuarkSelector-collapseButton" onClick={() => setCollapseSidebar(p => !p)}>≡</button>
                 </div>
                 <div className="QuarkSelector-container"
                      style={{
-                         display: collapsed ? "none" : ""
+                         display: collapseSidebar ? "none" : ""
                      }}>
                     <StyleProvider nyaFile={nyaFile} asset={"css/quarks/quarkSelector"} />
                     <div id="channelPortal" className="QuarkSelector-channelWrapper">

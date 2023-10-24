@@ -1,15 +1,22 @@
 import {NyaFile, StyleProvider} from "@litdevs/nyalib";
 import {Link, useParams} from "react-router-dom";
+import {useContext} from "react";
+import ClientContext from "../../context/ClientContext.js";
+import {useMediaQuery} from "react-responsive";
 
 // import "../../_nyafile/css/channels/channelButton.css"
 
 export default function ChannelButton({channel}) {
     let nyaFile = new NyaFile();
 
+    let {setCollapseSidebar} = useContext(ClientContext);
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     let {channelId} = useParams();
 
     return (
-        <Link to={`/${channel.quark}/${channel._id}`}>
+        <Link to={`/${channel.quark}/${channel._id}`} onClick={() => {
+            if (isMobile) setCollapseSidebar(true)
+        }}>
             <StyleProvider nyaFile={nyaFile} asset={"css/channels/channelButton"} />
             <div className={`ChannelButton-container${channelId === channel._id ? " ChannelButton-selectedContainer" : ""}`}>
                 <div className={`ChannelButton-endCapLeft${channelId === channel._id ? " ChannelButton-selectedEndCapLeft" : ""}`} />

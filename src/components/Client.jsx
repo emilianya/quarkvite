@@ -9,6 +9,7 @@ import useWebSocket from "react-use-websocket";
 import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
 import {Outlet} from "react-router-dom";
 import QuarkSelector from "./quarks/QuarkSelector.jsx";
+import {useMediaQuery} from "react-responsive";
 
 export default function Client () {
     let [ready, setReady] = useState(false);
@@ -24,6 +25,8 @@ export default function Client () {
     let [quarksInfo, setQuarksInfo] = useState(undefined);
     let [messageCache, setMessageCache] = useState({});
     let [gateway, setGateway] = useState(undefined)
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+    let [collapseSidebar, setCollapseSidebar] = useState(isMobile);
     let channelsInfo = useMemo(() => {
         if (!quarksInfo) return [];
         return quarksInfo?.reduce((accumulator, quark) => {
@@ -175,7 +178,8 @@ export default function Client () {
             gateway, setGateway,
             messageCache, setMessageCache,
             gatewayCall: sendJsonMessage,
-            channelsInfo
+            channelsInfo,
+            collapseSidebar, setCollapseSidebar
         }}>
             {!ready || !gatewayConnected ? <Spinner text={spinnerText} subText={spinnerSubText} /> : <>
                 <div className="Client-contentWrapper">
