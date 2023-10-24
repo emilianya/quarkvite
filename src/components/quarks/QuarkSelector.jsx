@@ -96,7 +96,8 @@ export default function QuarkSelector() {
                 <div className="QuarkSelector-container"
                      // style={{
                      //     display: false ? "none" : ""
-                     // }}>
+                     //}}
+                >
                     <StyleProvider nyaFile={nyaFile} asset={"css/quarks/quarkSelector"} />
                     <div id="channelPortal" className="QuarkSelector-channelWrapper">
 
