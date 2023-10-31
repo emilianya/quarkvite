@@ -2,9 +2,6 @@ import {useContext, useEffect, useRef, useState} from "react";
 import ClientContext from "../../context/ClientContext.js";
 import {NyaFile, StyleProvider} from "@litdevs/nyalib";
 import QuarkButton from "./QuarkButton.jsx";
-
-// //FIXME TODO REMOVE BEFORE DEPLOY
-// import "../../_nyafile/css/quarks/quarkSelector.css"
 import {Tooltip} from "react-tooltip";
 import {useMediaQuery} from "react-responsive";
 
@@ -65,9 +62,6 @@ export default function QuarkSelector() {
         }))
     }, [quarksInfo, setQuarkIcons])
 
-    // TODO: Tooltips on mobile
-    // A) stupid?
-    // B) Don't hide when collapsing sidebar
     return (
         <>
             <div onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}
