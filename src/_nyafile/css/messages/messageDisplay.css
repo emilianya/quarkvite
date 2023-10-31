@@ -3,4 +3,5 @@
     overflow-y: scroll;
     overflow-x: hidden;
     overflow-wrap: anywhere;
+    padding-left: 1rem;
 }

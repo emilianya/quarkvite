@@ -3,6 +3,7 @@ const assetLoadList = [
     {assetPath: "assets/spinner"},
     {assetPath: "assets/bg-tileable"},
     {assetPath: "assets/dm-icon"},
+    {assetPath: "assets/errorAvatar"},
     // Load fonts,
     {assetPath: "fonts/main"},
     {assetPath: "fonts/bold"},

@@ -1,0 +1,49 @@
+.Message-containerWrapper {
+    display: flex;
+    margin-bottom: 0.2rem;
+    background-color: var(--dark);
+    /*clip-path: polygon(0 0, calc(100% - 0.5rem) 0, 100% 100%, 0.5rem 100%);*/
+    clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+    width: 100%;
+}
+
+.Message-endCapLeft {
+    background-color: var(--accent);
+    clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+}
+
+.Message-avatar {
+    width: 3.25rem;
+    height: 100%;
+    margin-right: 0.5rem;
+    clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+}
+
+.Message-small {
+    font-family: Main, sans-serif;
+}
+
+.Message-reallySmall {
+    font-size: x-small;
+}
+
+.Message-container {
+    color: white;
+    padding: 0.25rem;
+    width: 100%;
+    border-width: 1px;
+    white-space: pre-wrap;
+}
+
+.Message-author {
+    font-family: Main-Bold, sans-serif;
+    margin-bottom: 0.2rem;
+}
+
+.Message-botBadge {
+    clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+    background-color: var(--accent);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: inline;
+}
