@@ -4,18 +4,6 @@ import APIContext from "../context/APIContext.js";
 import getNetworkInformation from "../util/api/methods/getNetworkInformation.js";
 import login from "../util/api/methods/login.js";
 
-let animationFrames = [
-    { transform: "scale(1, 1)", offset: 0},
-    { transform: "scale(1, 1.05)", offset: 0.2},
-    { transform: "scale(1, 0.3)", offset: 0.4},
-    { transform: "scale(1.05, 0.3)", offset: 0.6},
-    { transform: "scale(0, 0)", offset: 1},
-];
-let animationConfig = {
-    duration: 750,
-    iterations: 1
-};
-
 export default function LoginForm() {
     let nyaFile = new NyaFile();
 
@@ -74,14 +62,15 @@ export default function LoginForm() {
             }
             return;
         }
-        document.querySelector(".LoginForm-container-wrapper")?.animate(animationFrames, animationConfig);
-        document.querySelector(".LoginForm-container")?.animate(animationFrames, animationConfig);
+        let disappearAnimation = nyaFile.getCachedJson("animations/loginFormDisappear")
+        document.querySelector(".LoginForm-container-wrapper")?.animate(disappearAnimation.frames, disappearAnimation.config);
+        document.querySelector(".LoginForm-container")?.animate(disappearAnimation.frames, disappearAnimation.config);
         setTimeout(() => {
             document.querySelector(".LoginForm-container-wrapper").style.display = "none";
             document.querySelector(".LoginForm-container").style.display = "none";
             setThinking(false)
             setToken(loginInfo.res.response.access_token)
-        }, 740)
+        }, disappearAnimation.timeout)
     }
 
     return <>
@@ -121,16 +110,18 @@ function LoginFormError({error}) {
     let nyaFile = new NyaFile()
 
     useEffect(() => {
+        let nyaFile = new NyaFile()
+        let disappearAnimation = nyaFile.getCachedJson("animations/loginFormDisappear")
         if (error) {
             setShouldShow(true);
             return;
         }
         let goAwayTimeout = setTimeout(() => {
             setShouldShow(false)
-        }, 740)
+        }, disappearAnimation.timeout)
 
-        document.querySelector(".LoginFormError-container-wrapper")?.animate(animationFrames, animationConfig);
-        document.querySelector(".LoginFormError-container")?.animate(animationFrames, animationConfig);
+        document.querySelector(".LoginFormError-container-wrapper")?.animate(disappearAnimation.frames, disappearAnimation.config);
+        document.querySelector(".LoginFormError-container")?.animate(disappearAnimation.frames, disappearAnimation.config);
         return () => {
             clearTimeout(goAwayTimeout)
         }

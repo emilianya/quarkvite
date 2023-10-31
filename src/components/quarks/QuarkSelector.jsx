@@ -6,36 +6,12 @@ import QuarkButton from "./QuarkButton.jsx";
 // //FIXME TODO REMOVE BEFORE DEPLOY
 // import "../../_nyafile/css/quarks/quarkSelector.css"
 import {Tooltip} from "react-tooltip";
-
-let animationFrames = [
-    { width: "5.5rem", offset: 0},
-    // { width: "10.75rem", offset: 0.2},
-    // { width: "scale(1, 1.05)", offset: 0.2},
-    // { width: "scale(1, 0.3)", offset: 0.4},
-    { width: "26.25rem", offset: 0.8},
-    { width: "25rem", offset: 1},
-];
-
-let reverseAnimationFrames = [
-    { width: "25rem", offset: 0},
-    // { width: "26rem", offset: 0.5},
-    // { width: "27rem", offset: 0.15},
-    // { width: "25rem", offset: 0.3},
-    { width: "4.75rem", offset: 0.8},
-    { width: "5.5rem", offset: 1}
-    // { width: "scale(1, 1.05)", offset: 0.2},
-    // { width: "scale(1, 0.3)", offset: 0.4},
-];
-
-let animationConfig = {
-    duration: 300,
-    iterations: 1,
-    easing: "ease-out"
-};
+import {useMediaQuery} from "react-responsive";
 
 export default function QuarkSelector() {
     let {quarksInfo} = useContext(ClientContext)
     let nyaFile = new NyaFile()
+    const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
     let {collapseSidebar, setCollapseSidebar} = useContext(ClientContext);
     let [collapse, setCollapse] = useState(collapseSidebar);
 
@@ -66,15 +42,18 @@ export default function QuarkSelector() {
     }
 
     useEffect(() => {
+        let nyaFile = new NyaFile()
         let quarkSelector = document.querySelector("#quarkSelector");
         if (!collapseSidebar) {
+            let animation = nyaFile.getCachedJson("animations/sidebarCollapse")
             setCollapse(collapseSidebar)
-            quarkSelector.animate(animationFrames, animationConfig)
+            quarkSelector.animate(animation.frames, animation.config)
         } else {
-            quarkSelector.animate(reverseAnimationFrames, animationConfig)
+            let animation = nyaFile.getCachedJson("animations/sidebarOpen")
+            quarkSelector.animate(animation.frames, animation.config)
             setTimeout(() => {
                 setCollapse(collapseSidebar)
-            }, 290)
+            }, animation.timeout)
         }
     }, [collapseSidebar])
 
@@ -86,6 +65,9 @@ export default function QuarkSelector() {
         }))
     }, [quarksInfo, setQuarkIcons])
 
+    // TODO: Tooltips on mobile
+    // A) stupid?
+    // B) Don't hide when collapsing sidebar
     return (
         <>
             <div onTouchEnd={onTouchEnd} onTouchStart={onTouchStart} onTouchMove={onTouchMove}
@@ -93,11 +75,7 @@ export default function QuarkSelector() {
                 <div className="QuarkSelector-top">
                     <button className="QuarkSelector-collapseButton" onClick={() => setCollapseSidebar(p => !p)}>≡</button>
                 </div>
-                <div className="QuarkSelector-container"
-                     // style={{
-                     //     display: false ? "none" : ""
-                     //}}
-                >
+                <div className="QuarkSelector-container">
                     <StyleProvider nyaFile={nyaFile} asset={"css/quarks/quarkSelector"} />
                     <div id="channelPortal" className="QuarkSelector-channelWrapper">
 
@@ -108,10 +86,10 @@ export default function QuarkSelector() {
                     </div>
                 </div>
             </div>
-            <Tooltip id={`quark-button-tip`}
-                     className={"QuarkSelector-tooltip"}
-                     noArrow={true}
-            />
+            {!isMobile && <Tooltip id={`quark-button-tip`}
+                      className={"QuarkSelector-tooltip"}
+                      noArrow={true}
+            />}
         </>
     )
 }

@@ -6,6 +6,7 @@ import "../../style/spin.css";
 import {NyaFile} from "@litdevs/nyalib";
 import AssetContext from "../../context/AssetContext.js";
 import localForage from "localforage";
+import assetLoadList from "./assetLoadList.js";
 
 export default function AssetLoader() {
     let [ready, setReady] = useState(false);
@@ -32,30 +33,12 @@ export default function AssetLoader() {
             setSpinnerImage(await nyaFile.getAssetDataUrl("assets/spinner"))
             setSpinnerSubText("Caching assets")
 
-            // Load image assets
-            nyaFile.queueCache("assets/spinner")
-            nyaFile.queueCache("assets/bg-tileable")
-            nyaFile.queueCache("assets/dm-icon")
-            // Load fonts
-            nyaFile.queueCache("fonts/main")
-            nyaFile.queueCache("fonts/bold")
-            // Load CSS for components
-            nyaFile.queueCache("css/quarklight", "text")
-            nyaFile.queueCache("css/loginForm", "text")
-            nyaFile.queueCache("css/loginFormError", "text")
-            nyaFile.queueCache("css/client", "text")
-            nyaFile.queueCache("css/messages/message", "text")
-            nyaFile.queueCache("css/messages/messageDisplay", "text")
-            nyaFile.queueCache("css/messages/messageInput", "text")
-            nyaFile.queueCache("css/quarks/quark", "text")
-            nyaFile.queueCache("css/quarks/quarkButton", "text")
-            nyaFile.queueCache("css/quarks/quarkSelector", "text")
-            nyaFile.queueCache("css/channels/channel", "text")
-            nyaFile.queueCache("css/channels/channelButton", "text")
-            nyaFile.queueCache("css/channels/channelSelector", "text")
+            assetLoadList.forEach(asset => {
+                nyaFile.queueCache(asset.assetPath, asset.assetType || "dataUrl");
+            })
 
             await nyaFile.waitAllCached()
-            setSpinnerImage(nyaFile.getCachedData("assets/spinner"))
+            setSpinnerImage(nyaFile.getCachedData("assets/spinner")) // Update spinner again for some reason?? this will be the same as before lol?
 
             let customNyaFile = await localForage.getItem("customNyaFile") || {url: ""};
             if (customNyaFile.url) {
