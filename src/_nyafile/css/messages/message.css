@@ -1,5 +1,6 @@
 .Message-containerWrapper {
     display: flex;
+    flex-direction: row;
     margin-bottom: 0.2rem;
     background-color: var(--dark);
     /*clip-path: polygon(0 0, calc(100% - 0.5rem) 0, 100% 100%, 0.5rem 100%);*/
@@ -9,13 +10,15 @@
 
 .Message-endCapLeft {
     background-color: var(--accent);
+    display: flex;
     clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
 }
 
 .Message-avatar {
-    width: 3.25rem;
-    height: 100%;
+    width: 3.5rem;
+    height: 3.4rem;
     margin-right: 0.5rem;
+    margin-bottom: 0;
     clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
 }
 
@@ -29,10 +32,43 @@
 
 .Message-container {
     color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.Message-main {
     padding: 0.25rem;
     width: 100%;
-    border-width: 1px;
     white-space: pre-wrap;
+}
+@media only screen and (min-width: 920px) {
+    .Message-main {
+        width: calc(100% - 6.5rem);
+        /* Took me a while to figure out why this is tools width + 0.5, its because of the padding on main (0.25 + 0.25 for 0.5 on top of the 6) */
+    }
+}
+.Message-tools {
+    width: 6rem;
+    clip-path: polygon(0.5rem 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+    white-space: nowrap;
+}
+.Message-toolsDelete, .Message-toolsEdit, .Message-toolsReply {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+}
+.Message-toolsDelete {
+    background-color: #ff4444;
+}
+
+.Message-toolsEdit {
+    background-color: #5bb42d;
+}
+
+.Message-toolsReply {
+    background-color: #588be1;
 }
 
 .Message-author {
@@ -46,4 +82,5 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     display: inline;
+    white-space: nowrap;
 }

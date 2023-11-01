@@ -67,6 +67,13 @@ export default class Channel {
                 })
                 break;
             case "messageDelete":
+                clientState.setMessageCache(cache => {
+                    // TODO: This does not work :(
+                    if (!cache[eventData.message.channelId]) cache[eventData.message.channelId] = []
+                    cache[eventData.message.channelId].filter(m => m.message._id !== eventData.message._id);
+                    return structuredClone(cache)
+                })
+                break;
             case "messageUpdate":
             case "channelCreate":
             case "channelDelete":
