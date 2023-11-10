@@ -31,7 +31,9 @@ Sentry.init({
             // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
             tracePropagationTargets: ["localhost", /^https:\/\/[a-zA-Z0-9-.]+\.[a-zA-Z0-9]+\/v2.*/],
         }),
-        new Sentry.Replay(),
+        new Sentry.Replay({
+            useCompression: false
+        }),
     ],
     environment: import.meta.env.VITE_APP_QV_ENV || "development",
     // Performance Monitoring
