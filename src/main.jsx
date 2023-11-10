@@ -18,8 +18,7 @@ import * as Sentry from "@sentry/react";
 
 Sentry.init({
     dsn: "https://c0236bc34da6926f2dbe59f139a02e5e@sentry.yggdrasil.cat/2",
-    //tunnel: `https://${import.meta.env.VITE_APP_QV_ENV === "development" ? "dev." : ""}nya.skin/diagtun`, // fuck you easyprivacy
-    tunnel: `https://dev.nya.skin/diagtun`, // fuck you easyprivacy
+    tunnel: `https://${import.meta.env.VITE_APP_QV_ENV === "development" ? "dev." : ""}nya.skin/diagtun`, // fuck you easyprivacy
     integrations: [
         new Sentry.BrowserTracing({
             routingInstrumentation: Sentry.reactRouterV6Instrumentation(
