@@ -37,65 +37,68 @@ export default function Client () {
         protocols: token,
         onMessage: (message) => {
             // Call event on the relevant object
+            const throwError = (...error) => {
+                console.error(error)
+                throw new Error(error)
+            }
+            let eventData
             try {
-                let eventData = JSON.parse(message.data);
-                let clientState = {
-                    channelsInfo,
-                    quarksInfo,
-                    setQuarksInfo: (p) => setQuarksInfo(p),
-                    messageCache,
-                    setMessageCache: (p) => {
-                        console.log("Message cache updated")
-                        setMessageCache(p)
-                    } // I am not fully certain I need to be calling the state
-                }                                                    // update from in the component but whatever
-                switch (eventData.eventId) {
-                    case "messageCreate":
-                    case "messageDelete":
-                    case "messageUpdate": {
-                        const eventChannel = channelsInfo.find(c => c._id === eventData.message.channelId);
-                        if (!eventChannel) return console.error(`Message event received for unknown channel ${eventData.message.channelId}`, eventData);
-                        eventChannel.event(eventData, clientState);
-                        break;
-                    }
-                    case "channelCreate":
-                    case "channelDelete":
-                    case "channelUpdate": {
-                        const eventChannel = channelsInfo.find(c => c._id === eventData.channel._id);
-                        if (!eventChannel) return console.error(`Channel event received for unknown channel ${eventData.channel._id}`, eventData);
-                        eventChannel.event(eventData, clientState);
-                        break;
-                    }
-                    case "quarkUpdate":
-                    case "quarkDelete": {
-                        const eventQuark = quarksInfo.find(q => q._id === eventData.quark._id)
-                        if (!eventQuark) return console.error(`Quark event received for unknown quark ${eventData.quark._id}`, eventData);
-                        eventQuark.event(eventData);
-                        break;
-                    }
-                    case "memberUpdate":
-                    case "memberLeave":
-                    case "memberJoin": {
-                        // TODO implement something here
-                        break;
-                    }
-
-                    case "quarkOrderUpdate":
-                    case "nicknameUpdate": {
-                        // TODO implement something here
-                        break;
-                    }
-
-                    case "heartbeat":
-                    case "subscribe":
-                        break;
-                    default:
-                        console.error(`Unhandled event ${eventData.eventId}`)
+                eventData = JSON.parse(message.data);
+            } catch (e) {
+                return throwError("Invalid JSON from gateway?", e)
+            }
+            let clientState = {
+                channelsInfo,
+                quarksInfo,
+                setQuarksInfo: (p) => setQuarksInfo(p),
+                messageCache,
+                setMessageCache: (p) => {
+                    console.log("Message cache updated")
+                    setMessageCache(p)
+                } // I am not fully certain I need to be calling the state
+            }                                                    // update from in the component but whatever
+            switch (eventData.eventId) {
+                case "messageCreate":
+                case "messageDelete":
+                case "messageUpdate": {
+                    const eventChannel = channelsInfo.find(c => c._id === eventData.message.channelId);
+                    if (!eventChannel) return throwError(`Message event received for unknown channel ${eventData.message.channelId}`, eventData);
+                    eventChannel.event(eventData, clientState);
+                    break;
+                }
+                case "channelCreate":
+                case "channelDelete":
+                case "channelUpdate": {
+                    const eventChannel = channelsInfo.find(c => c._id === eventData.channel._id);
+                    if (!eventChannel) return throwError(`Channel event received for unknown channel ${eventData.channel._id}`, eventData);
+                    eventChannel.event(eventData, clientState);
+                    break;
+                }
+                case "quarkUpdate":
+                case "quarkDelete": {
+                    const eventQuark = quarksInfo.find(q => q._id === eventData.quark._id)
+                    if (!eventQuark) return throwError(`Quark event received for unknown quark ${eventData.quark._id}`, eventData);
+                    eventQuark.event(eventData);
+                    break;
+                }
+                case "memberUpdate":
+                case "memberLeave":
+                case "memberJoin": {
+                    // TODO implement something here
+                    break;
                 }
 
-                // console.debug(eventData)
-            } catch (e) {
-                console.error("Invalid JSON from gateway?", e)
+                case "quarkOrderUpdate":
+                case "nicknameUpdate": {
+                    // TODO implement something here
+                    break;
+                }
+
+                case "heartbeat":
+                case "subscribe":
+                    break;
+                default:
+                    throwError(`Unhandled event type: ${eventData.eventId}`)
             }
         },
         onOpen: () => {

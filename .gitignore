@@ -27,3 +27,4 @@ public/default.nya
 
 # Sentry Config File
 .env.sentry-build-plugin
+.env
