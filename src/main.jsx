@@ -32,7 +32,7 @@ Sentry.init({
         }),
         new Sentry.Replay(),
     ],
-    environment: import.meta.QV_ENV || "development",
+    environment: import.meta.env.QV_ENV || "development",
     // Performance Monitoring
     tracesSampleRate: 1.0, // Capture 100% of the transactions
     // Session Replay
