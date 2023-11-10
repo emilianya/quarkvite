@@ -8,6 +8,24 @@ import Client from "./components/Client.jsx";
 import Quark from "./components/quarks/Quark.jsx";
 import Channel from "./components/channels/Channel.jsx";
 
+import * as Sentry from "@sentry/react";
+
+Sentry.init({
+    dsn: "https://c0236bc34da6926f2dbe59f139a02e5e@sentry.yggdrasil.cat/2",
+    integrations: [
+        new Sentry.BrowserTracing({
+            // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+            tracePropagationTargets: ["localhost", /^https:\/\/[a-zA-Z0-9-.]+\.[a-zA-Z0-9]+\/v2.*/],
+        }),
+        new Sentry.Replay(),
+    ],
+    // Performance Monitoring
+    tracesSampleRate: 1.0, // Capture 100% of the transactions
+    // Session Replay
+    replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+    replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+});
+
 const router = createBrowserRouter([
     {
         path: "/",
