@@ -21,6 +21,7 @@ const assetLoadList = [
     {assetPath: "css/channels/channel", assetType: "text"},
     {assetPath: "css/channels/channelButton", assetType: "text"},
     {assetPath: "css/channels/channelSelector", assetType: "text"},
+    {assetPath: "css/errorBoundary", assetType: "text"},
     // Load animations
     {assetPath: "animations/loginFormDisappear", assetType: "text"},
     {assetPath: "animations/sidebarCollapse", assetType: "text"},

@@ -3,10 +3,11 @@ import {useContext, useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import "../../style/spin.css";
-import {NyaFile} from "@litdevs/nyalib";
+import {NyaFile, StyleProvider} from "@litdevs/nyalib";
 import AssetContext from "../../context/AssetContext.js";
 import localForage from "localforage";
 import assetLoadList from "./assetLoadList.js";
+import * as Sentry from "@sentry/react"
 
 export default function AssetLoader() {
     let [ready, setReady] = useState(false);
@@ -16,6 +17,7 @@ export default function AssetLoader() {
     let [spinnerImage, setSpinnerImage] = useState(logo)
     let {nyaUrl} = useContext(AssetContext);
     let {setNyaUrl} = useContext(AssetContext);
+    let nyaFile = new NyaFile();
 
     // Default asset load
     useEffect(() => {
@@ -110,7 +112,19 @@ export default function AssetLoader() {
     }, [nyaUrl, defaultReady]);
 
     return <>
-        {ready ? <Outlet/> : <Spinner text={spinnerText} subText={spinnerSubText} img={spinnerImage} />}
+        {ready
+            ?
+                <Sentry.ErrorBoundary
+                    showDialog={true}
+                    dialogOptions={{
+                        title: "It looks like Quarkvite crashed.",
+                        subtitle: "The developer has been notified.",
+                        subtitle2: "Any extra information about what happened helps!",
+                        labelEmail: "EMAIL (enter a@a.a if you would like to be anonymous)"
+                }} fallback={<StyleProvider nyaFile={nyaFile} asset={"css/errorBoundary"} />}>
+                    <Outlet/>
+                </Sentry.ErrorBoundary>
+            : <Spinner text={spinnerText} subText={spinnerSubText} img={spinnerImage} />}
     </>
 }
 
