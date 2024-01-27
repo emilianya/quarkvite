@@ -51,13 +51,14 @@ export default function Message({messageObject}) {
                     </div>
                     <div className="Message-content">
                         {messageObject.message.content}
-                        {messageObject.message?.attachments?.length > 0 ? "\n+ Attachments (unsupported)" : ""}
+                        {messageObject.message?.attachments?.map((attachment, index) => <><br /> <a target="_blank" href={attachment}>Attachment {index}</a></>)}
                     </div>
                 </div>
                 <div className="Message-tools" hidden={!showTools}>
                     <div className="Message-toolsDelete" onClick={async () => {
                         let deleteRes = await deleteMessage(messageObject.message.channelId, messageObject.message._id)
                         if (!deleteRes.success) {
+                            alert(deleteRes.reason) // this is not a handler but better than nothing
                             // TODO: Handler here :D
                         }
                     }}>
