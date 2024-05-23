@@ -6,7 +6,7 @@ import {useMediaQuery} from "react-responsive";
 
 // import "../../_nyafile/css/channels/channelButton.css"
 
-export default function ChannelButton({channel}) {
+export default function ChannelButton({channel, quark}) {
     let nyaFile = new NyaFile();
 
     let {setCollapseSidebar} = useContext(ClientContext);
@@ -14,7 +14,7 @@ export default function ChannelButton({channel}) {
     let {channelId} = useParams();
 
     return (
-        <Link to={`/${channel.quark}/${channel._id}`} onClick={() => {
+        <Link to={`/${quark._id}/${channel._id}`} onClick={() => {
             if (isMobile) setCollapseSidebar(true)
         }}>
             <StyleProvider nyaFile={nyaFile} asset={"css/channels/channelButton"} />

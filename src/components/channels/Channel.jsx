@@ -16,7 +16,7 @@ export default function Channel() {
         channel ? <>
             <StyleProvider nyaFile={nyaFile} asset={"css/channels/channel"} />
             Current channel is: {channel.name} ({channel._id})
-            <MessageDisplay channel={channel} />
+            <MessageDisplay channel={channel || null /* balls */} />
             <MessageInput channel={channel} />
         </> : <>Could not load channel {JSON.stringify(channelsInfo)}</>
     )

@@ -34,7 +34,6 @@ export default function Client () {
         })
     }, [quarksInfo])
     let {sendJsonMessage} = useWebSocket(gatewayUrl, {
-        protocols: token,
         onMessage: (message) => {
             // Call event on the relevant object
             const throwError = (...error) => {
@@ -57,12 +56,12 @@ export default function Client () {
                     setMessageCache(p)
                 } // I am not fully certain I need to be calling the state
             }                                                    // update from in the component but whatever
-            switch (eventData.eventId) {
+            switch (eventData.event) {
                 case "messageCreate":
                 case "messageDelete":
                 case "messageUpdate": {
-                    const eventChannel = channelsInfo.find(c => c._id === eventData.message.channelId);
-                    if (!eventChannel) return throwError(`Message event received for unknown channel ${eventData.message.channelId}`, eventData);
+                    const eventChannel = channelsInfo.find(c => c._id === eventData.channelId);
+                    if (!eventChannel) return throwError(`Message event received for unknown channel ${eventData.channelId}`, eventData);
                     eventChannel.event(eventData, clientState);
                     break;
                 }
@@ -97,13 +96,16 @@ export default function Client () {
                 case "heartbeat":
                 case "subscribe":
                     break;
+                case "authenticate":
+                    break;
                 default:
                     throwError(`Unhandled event type: ${eventData.eventId}`)
             }
         },
         onOpen: () => {
             console.info("Gateway connected!")
-            quarksInfo.forEach(quark => quark.subscribe(sendJsonMessage));
+            // quarksInfo.forEach(quark => quark.subscribe(sendJsonMessage));
+            sendJsonMessage({event: "authenticate", token: token})
             setGatewayConnected(true)
         },
         onClose: () => {

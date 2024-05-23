@@ -23,14 +23,6 @@ export default class Channel {
         this.quark = channel.quark;
     }
 
-    subscribe(gatewaySend) {
-        gatewaySend({
-            event: "subscribe",
-            message: `channel_${this._id}`
-        })
-        // console.debug(`Subscribed to channel_${this._id}`)
-    }
-
     async sendMessage(content) {
         let res = await apiCall(`channel/${this._id}/messages`, "POST", {
             content
@@ -60,8 +52,8 @@ export default class Channel {
         switch (eventData.eventId) {
             case "messageCreate":
                 clientState.setMessageCache(cache => {
-                    if (!cache[eventData.message.channelId]) cache[eventData.message.channelId] = []
-                    cache[eventData.message.channelId].push({message: eventData.message, author: eventData.author})
+                    if (!cache[eventData.channelId]) cache[eventData.channelId] = []
+                    cache[eventData.channelId].push(eventData.message)
 
                     return structuredClone(cache)
                 })
@@ -69,8 +61,8 @@ export default class Channel {
             case "messageDelete":
                 clientState.setMessageCache(cache => {
                     // TODO: This does not work :(
-                    if (!cache[eventData.message.channelId]) cache[eventData.message.channelId] = []
-                    cache[eventData.message.channelId].filter(m => m.message._id !== eventData.message._id);
+                    if (!cache[eventData.channelId]) cache[eventData.channelId] = []
+                    cache[eventData.channelId].filter(m => m._id !== eventData.message._id);
                     return structuredClone(cache)
                 })
                 break;

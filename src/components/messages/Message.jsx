@@ -3,13 +3,13 @@ import {useContext, useMemo, useState} from "react";
 import deleteMessage from "../../util/api/methods/deleteMessage.js";
 import ClientContext from "../../context/ClientContext.js";
 
-export default function Message({messageObject}) {
+export default function Message({messageObject, channel}) {
     let nyaFile = new NyaFile();
     let [showTools, setShowTools] = useState(false);
     let {setMessageCache} = useContext(ClientContext);
 
     let realAuthor = useMemo(() => {
-        let botMessage = messageObject.message.specialAttributes.find(a => a.type === "botMessage")
+        let botMessage = messageObject?.specialAttributes.find(a => a.type === "botMessage")
         messageObject.author.originalName = messageObject.author.username;
         if (!botMessage) return messageObject.author;
         let author = structuredClone(messageObject.author);
@@ -27,7 +27,7 @@ export default function Message({messageObject}) {
 
         return date.toLocaleDateString();
     }
-    let formattedDate = useMemo(() => formatDate(new Date(messageObject.message.timestamp)), [messageObject])
+    let formattedDate = useMemo(() => formatDate(new Date(messageObject.timestamp)), [messageObject])
 
     return (
         <div className="Message-containerWrapper" onClick={() => {console.log(messageObject)}} onTouchEnd={() => {
@@ -47,16 +47,16 @@ export default function Message({messageObject}) {
                 <div className="Message-main">
                     <div className="Message-author">
                         {realAuthor.username}{messageObject.author.isBot && <div className="Message-botBadge">{realAuthor.username !== realAuthor.originalName ? realAuthor.originalName : "BOT"}</div>}
-                        <small className="Message-small"> {formattedDate}<span className="Message-reallySmall"> via {messageObject.message.ua}</span></small>
+                        <small className="Message-small"> {formattedDate}<span className="Message-reallySmall"> via {messageObject?.ua}</span></small>
                     </div>
                     <div className="Message-content">
-                        {messageObject.message.content}
-                        {messageObject.message?.attachments?.map((attachment, index) => <><br /> <a target="_blank" href={attachment}>Attachment {index}</a></>)}
+                        {messageObject?.content}
+                        {messageObject?.attachments?.map((attachment, index) => <><br /> <a target="_blank" href={attachment}>Attachment {index}</a></>)}
                     </div>
                 </div>
                 <div className="Message-tools" hidden={!showTools}>
                     <div className="Message-toolsDelete" onClick={async () => {
-                        let deleteRes = await deleteMessage(messageObject.message.channelId, messageObject.message._id)
+                        let deleteRes = await deleteMessage(channel._id, messageObject._id)
                         if (!deleteRes.success) {
                             alert(deleteRes.reason) // this is not a handler but better than nothing
                             // TODO: Handler here :D

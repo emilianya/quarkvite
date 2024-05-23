@@ -6,7 +6,7 @@ import Quark from "../classes/Quark.js";
  * @return {Promise<Quark[]>}
  */
 export default async function getUserQuarks() {
-    let res = await apiCall("quark/me", "GET");
+    let res = await apiCall("quark", "GET");
     if (!res.fetchSuccess || !res.request.success) throw new Error("Failed to fetch user quarks");
     return res.response.quarks.map(quark => {
         return new Quark(quark)

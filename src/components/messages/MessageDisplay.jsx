@@ -15,9 +15,10 @@ export default function MessageDisplay({channel}) {
             return;
         }
         let channelMessages = messageCache[channel._id];
-        let cleanMessageCache = channelMessages.filter((v, i) => channelMessages.findIndex(iv => v.message._id === iv.message._id) === i)
-        cleanMessageCache.sort((a, b) => a.message.timestamp - b.message.timestamp)
-        let messageArray = cleanMessageCache.map(messageObject => <Message key={messageObject.message._id} messageObject={messageObject} />)
+        console.log("M", messageCache, channelMessages)
+        let cleanMessageCache = channelMessages.filter((v, i) => channelMessages.findIndex(iv => v._id === iv._id) === i)
+        cleanMessageCache.sort((a, b) => a.timestamp - b.timestamp)
+        let messageArray = cleanMessageCache.map(messageObject => <Message key={messageObject.message?._id} channel={channel} messageObject={messageObject} />)
         setMessages(messageArray);
     }, [channel, messageCache]);
 

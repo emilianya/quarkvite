@@ -16,7 +16,7 @@ export default class UserInformation {
     async fetch() {
         let res = await apiCall("user/me", "GET");
         if (!res.fetchSuccess || !res.request.success) throw new Error("Failed to fetch user information");
-        let userInfo = res.response.jwtData;
+        let userInfo = res.response.user;
         this.admin = userInfo.admin;
         this.isBot = userInfo.isBot;
         this.email = userInfo.email;

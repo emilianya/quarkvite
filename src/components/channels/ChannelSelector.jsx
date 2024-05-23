@@ -14,7 +14,7 @@ export default function ChannelSelector({ quark }) {
 
     useEffect(() => {
         setChannelButtons(quark.channels.map(channel => {
-            return <ChannelButton key={channel._id} channel={channel} />
+            return <ChannelButton key={channel._id} channel={channel} quark={quark} />
         }))
     }, [quark])
 

@@ -31,7 +31,7 @@ function Quarklight() {
             let localConfig = await localForage.getItem("localConfig") || {};
             let lBaseUrl = localConfig?.network?.baseUrl || localConfig?.networkInformation?.baseUrl || "https://lightquark.network";
             console.log(lBaseUrl, localConfig?.network?.baseUrl, localConfig?.networkInformation?.baseUrl)
-            let lVersion = localConfig?.network?.version || "v2";
+            let lVersion = localConfig?.network?.version || "v4";
             let lToken = localConfig?.token || null;
             let lNetwork = localConfig?.network || {};
             let lNetworkInformation = localConfig?.networkInformation || {};
